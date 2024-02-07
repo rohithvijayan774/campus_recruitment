@@ -35,6 +35,9 @@ class _StartPageState extends State<StartPage> {
             ],
           ),
         ), // Use the navy blue color you desire
+        child: Center(
+          child: Image.asset('assets/splash2.png'),
+        ),
       ),
     );
   }

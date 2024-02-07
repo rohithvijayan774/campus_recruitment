@@ -45,7 +45,8 @@ class _GetstartedState extends State<Getstarted> {
             padding: const EdgeInsets.all(70.0),
             child: Center(
               child: Text(
-                'Take the First step towards your\n\t\t\t\t\tdream with our app',
+                'Take the First step towards your dream with our app',
+                textAlign: TextAlign.center,
                 style: GoogleFonts.aBeeZee(
                   fontSize: 18,
                 ),

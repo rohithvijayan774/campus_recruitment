@@ -16,7 +16,7 @@ class BottomNavigation extends StatefulWidget {
 class _BottomNavigationState extends State<BottomNavigation> {
   int currentIndex = 0;
   final pages = [
-    StudentHome(),
+    const StudentHome(),
     const JobListing(),
     const Settings(),
     const StudentProfile(),

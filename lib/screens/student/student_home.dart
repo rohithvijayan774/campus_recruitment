@@ -52,6 +52,7 @@ class _StudentHomeState extends State<StudentHome> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       body: FutureBuilder(
           future: fetchUsers(),
@@ -199,7 +200,7 @@ class _StudentHomeState extends State<StudentHome> {
                               ),
                             ),
                             SizedBox(
-                              height: constraints.maxWidth > 250 ? 210 : 250,
+                              height: size.height * 0.3,
                               child: StreamBuilder<QuerySnapshot>(
                                 stream: FirebaseFirestore.instance
                                     .collection('jobs')
@@ -228,9 +229,9 @@ class _StudentHomeState extends State<StudentHome> {
                                         child: Card(
                                           elevation: 5,
                                           child: Container(
-                                            height: constraints.maxWidth > 500
-                                                ? 180
-                                                : constraints.maxWidth * 0.5,
+                                            // height: constraints.maxWidth > 500
+                                            //     ? 180
+                                            //     : constraints.maxWidth * 0.5,
                                             width: constraints.maxWidth > 600
                                                 ? 180
                                                 : constraints.maxWidth * 1.2,
@@ -512,7 +513,7 @@ class _StudentHomeState extends State<StudentHome> {
                                             color: Colors.white,
                                             child: Column(
                                               crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                                  CrossAxisAlignment.center,
                                               children: [
                                                 Stack(
                                                   children: [
@@ -529,13 +530,19 @@ class _StudentHomeState extends State<StudentHome> {
                                                             CrossAxisAlignment
                                                                 .start,
                                                         children: [
-                                                          Text(
-                                                            'Event Date: ${event['eventDate']}',
-                                                            style:
-                                                                const TextStyle(
-                                                              fontSize: 12,
-                                                              color:
-                                                                  Colors.black,
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .only(
+                                                                    left: 10),
+                                                            child: Text(
+                                                              'Event Date: ${event['eventDate']}',
+                                                              style:
+                                                                  const TextStyle(
+                                                                fontSize: 12,
+                                                                color: Colors
+                                                                    .black,
+                                                              ),
                                                             ),
                                                           ),
                                                         ],
@@ -547,6 +554,9 @@ class _StudentHomeState extends State<StudentHome> {
                                                   padding:
                                                       const EdgeInsets.all(8.0),
                                                   child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
                                                     mainAxisAlignment:
                                                         MainAxisAlignment.start,
                                                     children: [

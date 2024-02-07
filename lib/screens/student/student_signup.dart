@@ -458,7 +458,7 @@ class _SignUpState extends State<SignUp> {
                           child: Text(
                             "Already have an Account? ",
                             style:
-                                TextStyle(color: Colors.black, fontSize: 15.0),
+                                TextStyle(color: Colors.black, fontSize: 10.0),
                           ),
                         ),
                         const SizedBox(
@@ -466,11 +466,7 @@ class _SignUpState extends State<SignUp> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const StudentLogIn()),
-                            );
+                            Navigator.of(context).pop();
                           },
                           child: const Text(
                             " login",

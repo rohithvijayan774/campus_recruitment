@@ -134,7 +134,7 @@ class _JObview1State extends State<JObview1> {
                             ],
                           ),
                           SizedBox(
-                            height: 110,
+                            height: 130,
                             width: MediaQuery.of(context).size.width,
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),

@@ -96,7 +96,7 @@ class _StudentProfileState extends State<StudentProfile> {
                           ),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -264,7 +264,7 @@ class _StudentProfileState extends State<StudentProfile> {
                   borderRadius: BorderRadius.circular(25),
                 ),
                 child: Container(
-                  height: 200,
+                  // height: 200,
                   width: 400,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(25),
