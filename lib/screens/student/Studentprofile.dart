@@ -40,11 +40,9 @@ class _StudentProfileState extends State<StudentProfile> {
           Map<String, dynamic>? data = snapshot.data();
 
           if (data != null && data.containsKey('name')) {
-            setState(() {
-              _name = data['name'] ?? 'Unknown';
-              _field = data['field'] ?? 'Unknown';
-              _email = data['email'] ?? 'Unknown';
-            });
+            _name = data['name'] ?? 'Unknown';
+            _field = data['field'] ?? 'Unknown';
+            _email = data['email'] ?? 'Unknown';
           } else {
             print('Name field not found in the snapshot');
           }
@@ -58,252 +56,269 @@ class _StudentProfileState extends State<StudentProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            Container(
-              height: 300,
-              width: MediaQuery.of(context).size.width,
-              decoration: const BoxDecoration(color: Colors.blue),
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 190),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.all(25.0),
-                      child: Text(
-                        'Profile',
-                        style: TextStyle(fontSize: 30, color: Colors.white),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: CircleAvatar(
-                        backgroundColor: Colors.white38,
-                        child: IconButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const StudentProfile2(),
-                              ),
-                            );
-                          },
-                          icon: const Icon(
-                            Icons.edit,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 380),
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: 635,
-                color: Colors.white,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          // Navigate to the next page when the card is tapped
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const PersonalDetails(),
-                            ),
-                          );
-                        },
-                        child: const Card(
-                          color: Color(0xFFD3D3D3),
-                          child: ListTile(
-                            leading: Icon(
-                              Icons.star_outline_outlined,
-                              color: Colors.blue,
-                            ),
-                            title: Text(
-                              'Personal Details',
-                              textScaleFactor: 1.5,
-                            ),
-                            trailing: Icon(
-                              Icons.keyboard_arrow_right,
-                              color: Colors.blue,
-                            ),
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          // Navigate to the next page when the card is tapped
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  const StudentQualification(),
-                            ),
-                          );
-                        },
-                        child: const Card(
-                          color: Color(0xFFD3D3D3),
-                          child: ListTile(
-                            leading: Icon(
-                              Icons.shopping_bag_rounded,
-                              color: Colors.blue,
-                            ),
-                            title: Text(
-                              'Qualification',
-                              textScaleFactor: 1.5,
-                            ),
-                            trailing: Icon(
-                              Icons.keyboard_arrow_right,
-                              color: Colors.blue,
-                            ),
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const ViewSkill(),
-                            ),
-                          );
-                        },
-                        child: const Card(
-                          color: Color(0xFFD3D3D3),
-                          child: ListTile(
-                            leading: Icon(
-                              Icons.pie_chart,
-                              color: Colors.blue,
-                            ),
-                            title: Text(
-                              'Skills',
-                              textScaleFactor: 1.5,
-                            ),
-                            trailing: Icon(
-                              Icons.keyboard_arrow_right,
-                              color: Colors.blue,
-                            ),
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const StudentViewResume(
-                                resumeUrl: '',
-                              ),
-                            ),
-                          );
-                        },
-                        child: const Card(
-                          color: Color(0xFFD3D3D3),
-                          child: ListTile(
-                            leading: Icon(Icons.contact_page_outlined,
-                                color: Colors.blue),
-                            title: Text(
-                              'Resume',
-                              textScaleFactor: 1.5,
-                            ),
-                            trailing: Icon(
-                              Icons.keyboard_arrow_right,
-                              color: Colors.blue,
-                            ),
-                          ),
-                        ),
-                      ),
-                      // View Applied jobs Card
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const AppliedJobs(),
-                            ),
-                          );
-                        },
-                        child: const Card(
-                          color: Color(0xFFD3D3D3),
-                          child: ListTile(
-                            leading: Icon(
-                              Icons.compass_calibration_outlined,
-                              color: Colors.blue,
-                            ),
-                            title: Text(
-                              'View Applied jobs',
-                              textScaleFactor: 1.5,
-                            ),
-                            trailing: Icon(
-                              Icons.keyboard_arrow_right,
-                              color: Colors.blue,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 180, left: 12),
-              child: Card(
-                elevation: 5,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25),
-                ),
-                child: Container(
-                  // height: 200,
-                  width: 400,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(25),
-                    color: Colors.white,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+      body: FutureBuilder(
+          future: _fetchUserData(),
+          builder: (context, snapshot) {
+            return snapshot.connectionState == ConnectionState.waiting
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : SingleChildScrollView(
+                    child: Stack(
                       children: [
-                        const CircleAvatar(
-                          backgroundImage: AssetImage(
-                              'assets/person.png'), // You can replace this with your actual image
-                          radius: 50,
-                        ),
-                        const SizedBox(height: 10),
-                        Text(
-                          _name ?? 'Unknown',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 25,
+                        Container(
+                          height: 300,
+                          width: MediaQuery.of(context).size.width,
+                          decoration: const BoxDecoration(color: Colors.blue),
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 190),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.all(25.0),
+                                  child: Text(
+                                    'Profile',
+                                    style: TextStyle(
+                                        fontSize: 30, color: Colors.white),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: CircleAvatar(
+                                    backgroundColor: Colors.white38,
+                                    child: IconButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const StudentProfile2(),
+                                          ),
+                                        );
+                                      },
+                                      icon: const Icon(
+                                        Icons.edit,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                        const SizedBox(height: 5),
-                        Text(
-                          _field ?? 'Job Field Not Specified',
-                          style: const TextStyle(color: Colors.grey),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 380),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: 635,
+                            color: Colors.white,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      // Navigate to the next page when the card is tapped
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const PersonalDetails(),
+                                        ),
+                                      );
+                                    },
+                                    child: const Card(
+                                      color: Color(0xFFD3D3D3),
+                                      child: ListTile(
+                                        leading: Icon(
+                                          Icons.star_outline_outlined,
+                                          color: Colors.blue,
+                                        ),
+                                        title: Text(
+                                          'Personal Details',
+                                          textScaleFactor: 1.5,
+                                        ),
+                                        trailing: Icon(
+                                          Icons.keyboard_arrow_right,
+                                          color: Colors.blue,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      // Navigate to the next page when the card is tapped
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const StudentQualification(),
+                                        ),
+                                      );
+                                    },
+                                    child: const Card(
+                                      color: Color(0xFFD3D3D3),
+                                      child: ListTile(
+                                        leading: Icon(
+                                          Icons.shopping_bag_rounded,
+                                          color: Colors.blue,
+                                        ),
+                                        title: Text(
+                                          'Qualification',
+                                          textScaleFactor: 1.5,
+                                        ),
+                                        trailing: Icon(
+                                          Icons.keyboard_arrow_right,
+                                          color: Colors.blue,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const ViewSkill(),
+                                        ),
+                                      );
+                                    },
+                                    child: const Card(
+                                      color: Color(0xFFD3D3D3),
+                                      child: ListTile(
+                                        leading: Icon(
+                                          Icons.pie_chart,
+                                          color: Colors.blue,
+                                        ),
+                                        title: Text(
+                                          'Skills',
+                                          textScaleFactor: 1.5,
+                                        ),
+                                        trailing: Icon(
+                                          Icons.keyboard_arrow_right,
+                                          color: Colors.blue,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const StudentViewResume(
+                                            resumeUrl: '',
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: const Card(
+                                      color: Color(0xFFD3D3D3),
+                                      child: ListTile(
+                                        leading: Icon(
+                                            Icons.contact_page_outlined,
+                                            color: Colors.blue),
+                                        title: Text(
+                                          'Resume',
+                                          textScaleFactor: 1.5,
+                                        ),
+                                        trailing: Icon(
+                                          Icons.keyboard_arrow_right,
+                                          color: Colors.blue,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  // View Applied jobs Card
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const AppliedJobs(),
+                                        ),
+                                      );
+                                    },
+                                    child: const Card(
+                                      color: Color(0xFFD3D3D3),
+                                      child: ListTile(
+                                        leading: Icon(
+                                          Icons.compass_calibration_outlined,
+                                          color: Colors.blue,
+                                        ),
+                                        title: Text(
+                                          'View Applied jobs',
+                                          textScaleFactor: 1.5,
+                                        ),
+                                        trailing: Icon(
+                                          Icons.keyboard_arrow_right,
+                                          color: Colors.blue,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
                         ),
-                        const SizedBox(height: 5),
-                        Text(_email ?? 'Unknown'),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 180, left: 12),
+                          child: Card(
+                            elevation: 5,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                            child: Container(
+                              // height: 200,
+                              width: 400,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(25),
+                                color: Colors.white,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 8),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const CircleAvatar(
+                                      backgroundImage: AssetImage(
+                                          'assets/person.png'), // You can replace this with your actual image
+                                      radius: 50,
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      _name ?? 'Unknown',
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 25,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Text(
+                                      _field ?? 'Job Field Not Specified',
+                                      style:
+                                          const TextStyle(color: Colors.grey),
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Text(_email ?? 'Unknown'),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+                  );
+          }),
     );
   }
 }

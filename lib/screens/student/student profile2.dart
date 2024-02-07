@@ -20,16 +20,16 @@ class _StudentProfile2State extends State<StudentProfile2> {
   File? pickedImage;
   File? resumeFile;
   User? _user;
-  String? _name;
-  String? _lastName;
-  String? _field;
-  String? _email;
-  String? _dob;
-  String? _phoneNumber;
-  String? _gender;
-  String? _experience;
-  String? _qualification;
-  String? _skills;
+  TextEditingController _name = TextEditingController();
+  TextEditingController _lastName = TextEditingController();
+  TextEditingController _field = TextEditingController();
+  TextEditingController _email = TextEditingController();
+  TextEditingController _dob = TextEditingController();
+  TextEditingController _phoneNumber = TextEditingController();
+  TextEditingController _gender = TextEditingController();
+  TextEditingController _experience = TextEditingController();
+  TextEditingController _qualification = TextEditingController();
+  TextEditingController _skills = TextEditingController();
 
   Future<void> _getUserDetails() async {
     try {
@@ -46,16 +46,16 @@ class _StudentProfile2State extends State<StudentProfile2> {
 
           if (data != null) {
             _user = user;
-            _name = data['name'] ?? '';
-            _lastName = data['lastName'] ?? '';
-            _email = data['email'] ?? '';
-            _field = data['field'] ?? '';
-            _dob = data['dob'] ?? '';
-            _phoneNumber = data['phoneNumber'] ?? '';
-            _gender = data['gender'] ?? '';
-            _experience = data['experience'] ?? '';
-            _qualification = data['qualification'] ?? '';
-            _skills = data['skill'] ?? '';
+            _name.text = data['name'] ?? '';
+            _lastName.text = data['lastName'] ?? '';
+            _email.text = data['email'] ?? '';
+            _field.text = data['field'] ?? '';
+            _dob.text = data['dob'] ?? '';
+            _phoneNumber.text = data['phoneNumber'] ?? '';
+            _gender.text = data['gender'] ?? '';
+            _experience.text = data['experience'] ?? '';
+            _qualification.text = data['qualification'] ?? '';
+            _skills.text = data['skill'] ?? '';
           } else {
             print('User data not found in the snapshot');
           }
@@ -85,16 +85,16 @@ class _StudentProfile2State extends State<StudentProfile2> {
           .collection('users')
           .doc(_user!.uid)
           .update({
-        'name': _name,
-        'lastName': _lastName,
-        'email': _email,
-        'field': _field,
-        'dob': _dob,
-        'phoneNumber': _phoneNumber,
-        'gender': _gender,
-        'experience': _experience,
-        'qualification': _qualification,
-        'skill': _skills,
+        'name': _name.text,
+        'lastName': _lastName.text,
+        'email': _email.text,
+        'field': _field.text,
+        'dob': _dob.text,
+        'phoneNumber': _phoneNumber.text,
+        'gender': _gender.text,
+        'experience': _experience.text,
+        'qualification': _qualification.text,
+        'skill': _skills.text,
       });
     } catch (e) {
       print('Error updating user details: $e');
@@ -262,12 +262,8 @@ class _StudentProfile2State extends State<StudentProfile2> {
                                 children: [
                                   Expanded(
                                     child: TextFormField(
-                                      initialValue: _name,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _name = value;
-                                        });
-                                      },
+                                      // initialValue: _name.text,
+                                      controller: _name,
                                       decoration: InputDecoration(
                                         labelText: 'First Name',
                                         border: _customBorder(),
@@ -277,12 +273,8 @@ class _StudentProfile2State extends State<StudentProfile2> {
                                   const SizedBox(width: 16),
                                   Expanded(
                                     child: TextFormField(
-                                      initialValue: _lastName,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _lastName = value;
-                                        });
-                                      },
+                                      // initialValue: _lastName.text,
+                                      controller: _lastName,
                                       decoration: InputDecoration(
                                         labelText: 'Last Name',
                                         border: _customBorder(),
@@ -293,12 +285,8 @@ class _StudentProfile2State extends State<StudentProfile2> {
                               ),
                               const SizedBox(height: 16),
                               TextFormField(
-                                initialValue: _email,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _email = value;
-                                  });
-                                },
+                                // initialValue: _email.text,
+                                controller: _email,
                                 decoration: InputDecoration(
                                   labelText: 'Email',
                                   border: _customBorder(),
@@ -306,10 +294,8 @@ class _StudentProfile2State extends State<StudentProfile2> {
                               ),
                               const SizedBox(height: 16),
                               TextFormField(
-                                initialValue: _field,
-                                onChanged: (value) {
-                                  _field = value;
-                                },
+                                // initialValue: _field.text,
+                                controller: _field,
                                 decoration: InputDecoration(
                                   labelText: 'Field',
                                   border: _customBorder(),
@@ -317,12 +303,8 @@ class _StudentProfile2State extends State<StudentProfile2> {
                               ),
                               const SizedBox(height: 16),
                               TextFormField(
-                                initialValue: _dob,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _dob = value;
-                                  });
-                                },
+                                // initialValue: _dob.text,
+                                controller: _dob,
                                 decoration: InputDecoration(
                                   labelText: 'Date of Birth',
                                   border: _customBorder(),
@@ -330,12 +312,8 @@ class _StudentProfile2State extends State<StudentProfile2> {
                               ),
                               const SizedBox(height: 16),
                               TextFormField(
-                                initialValue: _phoneNumber,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _phoneNumber = value;
-                                  });
-                                },
+                                // initialValue: _phoneNumber.text,
+                                controller: _phoneNumber,
                                 decoration: InputDecoration(
                                   labelText: 'Phone Number',
                                   border: _customBorder(),
@@ -343,12 +321,8 @@ class _StudentProfile2State extends State<StudentProfile2> {
                               ),
                               const SizedBox(height: 16),
                               TextFormField(
-                                initialValue: _gender,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _gender = value;
-                                  });
-                                },
+                                // initialValue: _gender.text,
+                                controller: _gender,
                                 decoration: InputDecoration(
                                   labelText: 'Gender',
                                   border: _customBorder(),
@@ -356,12 +330,8 @@ class _StudentProfile2State extends State<StudentProfile2> {
                               ),
                               const SizedBox(height: 16),
                               TextFormField(
-                                initialValue: _experience,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _experience = value;
-                                  });
-                                },
+                                // initialValue: _experience.text,
+                                controller: _experience,
                                 decoration: InputDecoration(
                                   labelText: 'Experience',
                                   border: _customBorder(),
@@ -369,12 +339,8 @@ class _StudentProfile2State extends State<StudentProfile2> {
                               ),
                               const SizedBox(height: 16),
                               TextFormField(
-                                initialValue: _qualification,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _qualification = value;
-                                  });
-                                },
+                                // initialValue: _qualification.text,
+                                controller: _qualification,
                                 decoration: InputDecoration(
                                   labelText: 'Qualification',
                                   border: _customBorder(),
@@ -385,12 +351,8 @@ class _StudentProfile2State extends State<StudentProfile2> {
                                 children: [
                                   Expanded(
                                     child: TextFormField(
-                                      initialValue: _skills,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _skills = value;
-                                        });
-                                      },
+                                      // initialValue: _skills.text,
+                                      controller: _skills,
                                       decoration: InputDecoration(
                                         labelText: 'Skills',
                                         border: _customBorder(),
@@ -410,13 +372,7 @@ class _StudentProfile2State extends State<StudentProfile2> {
                               ElevatedButton(
                                 onPressed: () {
                                   _updateUserDetails();
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const StudentProfile(),
-                                    ),
-                                  );
+                                  Navigator.of(context).pop(true);
                                 },
                                 child: const Text('Done'),
                               ),
