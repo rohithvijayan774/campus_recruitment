@@ -29,7 +29,7 @@ class CompanyProfilePage extends StatefulWidget {
 class _CompanyProfilePageState extends State<CompanyProfilePage> {
   final AuthService _authService = AuthService();
   User? _user;
-  late Company _company;
+  Company? _company;
   File? _pickedImage;
 
   @override
@@ -55,12 +55,10 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
           .get();
 
       if (snapshot.exists) {
-        setState(() {
-          _company = Company(
-            companyname: snapshot.get('companyname'),
-            email: snapshot.get('email'),
-          );
-        });
+        _company = Company(
+          companyname: snapshot.get('companyname'),
+          email: snapshot.get('email'),
+        );
       }
     } catch (e) {
       print('Error fetching company details: $e');
@@ -91,7 +89,7 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
 
         // Update userlogo field in Firestore
         await FirebaseFirestore.instance
-            .collection('users')
+            .collection('companies')
             .doc(_user!.uid)
             .update({'userlogo': downloadURL});
 
@@ -116,142 +114,154 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
       body: FutureBuilder(
           future: _fetchCompanyDetails(_user!.uid),
           builder: (context, snapshot) {
-            return snapshot.hasError
-                ? Center(
-                    child: Text(snapshot.error.toString()),
+            return snapshot.connectionState == ConnectionState.waiting
+                ? const Center(
+                    child: CircularProgressIndicator(),
                   )
-                : Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 50.0),
-                      child: Column(
-                        children: [
-                          // Center profile icon with image picker
-                          GestureDetector(
-                            onTap: _pickImage,
-                            child: CircleAvatar(
-                              radius: 80,
-                              backgroundColor: Colors.grey,
-                              child: _pickedImage != null
-                                  ? ClipOval(
-                                      child: Image.file(
-                                        _pickedImage!,
-                                        width: 160,
-                                        height: 160,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    )
-                                  : Icon(
-                                      Icons.business,
-                                      size: 80,
-                                      color: Colors.white,
-                                    ),
-                            ),
-                          ),
-                          const SizedBox(height: 30),
-                          if (_user != null)
-                            Column(
-                              children: [
-                                Text(
-                                  _company.companyname ?? 'Company Name',
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(_company.email ?? 'email'),
-                              ],
-                            )
-                          else
-                            const Text('Not logged in'),
-
-                          // Buttons row
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                : snapshot.hasError
+                    ? Center(
+                        child: Text(snapshot.error.toString()),
+                      )
+                    : Center(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 50.0),
+                          child: Column(
                             children: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const CompanyShowProfile()),
-                                  );
+                              // Center profile icon with image picker
+                              GestureDetector(
+                                onTap: () {
+                                  _pickImage()
+                                      .then((value) => _saveImageToFirebase());
                                 },
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all(Colors.purple),
-                                ),
-                                child: const Text(
-                                  'Show Profile',
-                                  style: TextStyle(color: Colors.white),
+                                child: CircleAvatar(
+                                  radius: 80,
+                                  backgroundColor: Colors.grey,
+                                  child: _pickedImage != null
+                                      ? ClipOval(
+                                          child: Image.file(
+                                            _pickedImage!,
+                                            width: 160,
+                                            height: 160,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        )
+                                      : const Icon(
+                                          Icons.business,
+                                          size: 80,
+                                          color: Colors.white,
+                                        ),
                                 ),
                               ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const CompanyEditProfile()),
-                                  );
-                                },
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all(Colors.purple),
+                              const SizedBox(height: 30),
+                              if (_user != null)
+                                Column(
+                                  children: [
+                                    Text(
+                                      _company!.companyname,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(_company!.email),
+                                  ],
+                                )
+                              else
+                                const Text('Not logged in'),
+
+                              // Buttons row
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const CompanyShowProfile()),
+                                      );
+                                    },
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              Colors.purple),
+                                    ),
+                                    child: const Text(
+                                      'Show Profile',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const CompanyEditProfile()),
+                                      );
+                                    },
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              Colors.purple),
+                                    ),
+                                    child: const Text(
+                                      'Edit Profile',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                ],
+                              ),
+
+                              // Cards section
+                              Card(
+                                child: ListTile(
+                                  leading: const Icon(Icons.notifications),
+                                  title: const Text('Notifications'),
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const NotificationPage()),
+                                    );
+                                  },
                                 ),
-                                child: const Text(
-                                  'Edit Profile',
-                                  style: TextStyle(color: Colors.white),
+                              ),
+
+                              Card(
+                                child: ListTile(
+                                  leading: const Icon(Icons.info),
+                                  title: const Text('About'),
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const CompanyAbout()),
+                                    );
+                                  },
+                                ),
+                              ),
+
+                              Card(
+                                child: ListTile(
+                                  leading: const Icon(Icons.short_text),
+                                  title: const Text('Shortlist Candidate'),
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const ShortListCandidates()),
+                                    );
+                                  },
                                 ),
                               ),
                             ],
                           ),
-
-                          // Cards section
-                          Card(
-                            child: ListTile(
-                              leading: const Icon(Icons.notifications),
-                              title: const Text('Notifications'),
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => NotificationPage()),
-                                );
-                              },
-                            ),
-                          ),
-
-                          Card(
-                            child: ListTile(
-                              leading: const Icon(Icons.info),
-                              title: const Text('About'),
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => CompanyAbout()),
-                                );
-                              },
-                            ),
-                          ),
-
-                          Card(
-                            child: ListTile(
-                              leading: const Icon(Icons.short_text),
-                              title: const Text('Shortlist Candidate'),
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ShortListCandidates()),
-                                );
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
+                        ),
+                      );
           }),
     );
   }

@@ -60,8 +60,14 @@ class _CompanySettingsPageState extends State<CompanySettingsPage> {
 
   Future<void> _logout() async {
     try {
-      await _auth.signOut();
-      Navigator.pushReplacementNamed(context, '/onboardingScreen');
+      await _auth
+          .signOut()
+          .then((value) => Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => const StartPage(),
+              ),
+              (route) => false));
+      // Navigator.pushReplacementNamed(context, '/onboardingScreen');
     } catch (e) {
       print("Error during logout: $e");
     }
@@ -164,11 +170,12 @@ class _CompanySettingsPageState extends State<CompanySettingsPage> {
                           size: 30,
                         ),
                         onTap: () {
-                          Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(
-                                builder: (context) => const StartPage(),
-                              ),
-                              (route) => false);
+                          _logout();
+                          // Navigator.of(context).pushAndRemoveUntil(
+                          //     MaterialPageRoute(
+                          //       builder: (context) => const StartPage(),
+                          //     ),
+                          //     (route) => false);
                         },
                       ),
                     ],

@@ -21,6 +21,7 @@ class _StudentHomeState extends State<StudentHome> {
   String userNumber = '';
   String userDOB = '';
   String userQualification = '';
+  String userExperience = '';
   String userGender = '';
   String userSkills = '';
 
@@ -41,6 +42,7 @@ class _StudentHomeState extends State<StudentHome> {
         userQualification = snapshot['qualification'];
         userSkills = snapshot['skill'];
         userNumber = snapshot['phoneNumber'];
+        userExperience = snapshot['experience'];
       }
 
       print(userName);
@@ -452,6 +454,8 @@ class _StudentHomeState extends State<StudentHome> {
                                                                     userQualification,
                                                                 userSkills:
                                                                     userSkills,
+                                                                experience:
+                                                                    userExperience,
                                                               ),
                                                             ),
                                                           );
