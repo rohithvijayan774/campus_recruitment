@@ -11,7 +11,7 @@ class LandingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF3F6CDF), // #3F6CDF
+        backgroundColor: const Color(0xFF3F6CDF), // #3F6CDF
         actions: [
           TextButton(
             onPressed: () {
@@ -22,12 +22,12 @@ class LandingPage extends StatelessWidget {
                 ),
               );
             },
-            child: Text(
+            child: const Text(
               'Administrator Login',
               style: TextStyle(color: Colors.white),
             ),
           ),
-          SizedBox(width: 16), // Adjust the spacing as needed
+          const SizedBox(width: 16), // Adjust the spacing as needed
         ],
       ),
       body: SingleChildScrollView(

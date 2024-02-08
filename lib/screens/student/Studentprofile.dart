@@ -95,7 +95,11 @@ class _StudentProfileState extends State<StudentProfile> {
                                             builder: (context) =>
                                                 const StudentProfile2(),
                                           ),
-                                        );
+                                        ).then((result) {
+                                          if (result != null) {
+                                            setState(() {});
+                                          }
+                                        });
                                       },
                                       icon: const Icon(
                                         Icons.edit,

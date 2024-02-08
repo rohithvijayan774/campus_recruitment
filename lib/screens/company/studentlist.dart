@@ -91,7 +91,7 @@ class _StudentListState extends State<StudentList> {
                   itemCount: appliedJobs.length,
                   itemBuilder: (context, index) {
                     var username = appliedJobs[index]['username'];
-                    var jobTitle = appliedJobs[index]['jobTitle'];
+                    var jobTitle = appliedJobs[index]['jobName'];
 
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -245,18 +245,16 @@ class _CompanyViewStudentProfileState extends State<CompanyViewStudentProfile> {
       if (userSnapshot.docs.isNotEmpty) {
         final userData = userSnapshot.docs.first.data() as Map<String, dynamic>;
 
-        setState(() {
-          username = userData['username'] ?? '';
-          field = userData['field'] ?? '';
-          email = userData['email'] ?? '';
-          dob.text = userData['dob'] ?? '';
-          phone_number.text = userData['phone_number'] ?? '';
-          gender.text = userData['gender'] ?? '';
-          experience.text = userData['experience'] ?? '';
-          qualification.text = userData['qualification'] ?? '';
-          certification.text = userData['certification'] ?? '';
-          skills.text = userData['skills'] ?? '';
-        });
+        username = userData['username'] ?? '';
+        field = userData['field'] ?? '';
+        email = userData['email'] ?? '';
+        dob.text = userData['dob'] ?? '';
+        phone_number.text = userData['phone_number'] ?? '';
+        gender.text = userData['gender'] ?? '';
+        experience.text = userData['experience'] ?? '';
+        qualification.text = userData['qualification'] ?? '';
+        certification.text = userData['certification'] ?? '';
+        skills.text = userData['skills'] ?? '';
       } else {
         print(
             'No data found for username: ${widget.username} and jobTitle: ${widget.jobTitle}');
@@ -321,165 +319,169 @@ class _CompanyViewStudentProfileState extends State<CompanyViewStudentProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.only(top: 100.0),
-        child: ListView(
-          children: [
-            Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 30),
-                  child: SizedBox(
-                    height: 100,
-                    width: 300,
-                    child: Image.asset('assets/person.png'),
-                  ),
-                ),
-                Text(
-                  username,
-                  style: TextStyle(
-                    fontWeight: FontWeight.normal,
-                    fontSize: 30,
-                  ),
-                ),
-                Text(
-                  field,
-                  style: TextStyle(color: Colors.grey),
-                ),
-                Text(
-                  email,
-                  style: TextStyle(color: Colors.grey),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: TextFormField(
-                    readOnly: true,
-                    controller: dob,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
+      body: FutureBuilder(
+          future: fetchUserDetails(),
+          builder: (context, snapshot) {
+            return Padding(
+              padding: const EdgeInsets.only(top: 100.0),
+              child: ListView(
+                children: [
+                  Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 30),
+                        child: SizedBox(
+                          height: 100,
+                          width: 300,
+                          child: Image.asset('assets/person.png'),
+                        ),
                       ),
-                      hintText: 'Date of Birth',
+                      Text(
+                        username,
+                        style: TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontSize: 30,
+                        ),
+                      ),
+                      Text(
+                        field,
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                      Text(
+                        email,
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: TextFormField(
+                          readOnly: true,
+                          controller: dob,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            hintText: 'Date of Birth',
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: TextFormField(
+                          readOnly: true,
+                          controller: phone_number,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            hintText: 'Phone No',
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: TextFormField(
+                          readOnly: true,
+                          controller: gender,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            hintText: 'Gender',
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: TextFormField(
+                      readOnly: true,
+                      controller: experience,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        hintText: 'Experience',
+                      ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: TextFormField(
-                    readOnly: true,
-                    controller: phone_number,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: TextFormField(
+                      readOnly: true,
+                      controller: qualification,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        hintText: 'Qualification',
                       ),
-                      hintText: 'Phone No',
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: TextFormField(
-                    readOnly: true,
-                    controller: gender,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: TextFormField(
+                      readOnly: true,
+                      controller: skills,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        hintText: 'Skills',
                       ),
-                      hintText: 'Gender',
                     ),
                   ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: TextFormField(
-                readOnly: true,
-                controller: experience,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.purple,
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          child: const Text('View Resume'),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: ElevatedButton(
+                          onPressed: _shortListCandidate,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.purple,
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          child: const Text('ShortList'),
+                        ),
+                      ),
+                    ],
                   ),
-                  hintText: 'Experience',
-                ),
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: ElevatedButton(
+                      onPressed: _rejectCandidate,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        foregroundColor: Colors.red,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: const Text('Reject'),
+                    ),
+                  ),
+                ],
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: TextFormField(
-                readOnly: true,
-                controller: qualification,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  hintText: 'Qualification',
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: TextFormField(
-                readOnly: true,
-                controller: skills,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  hintText: 'Skills',
-                ),
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.purple,
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    child: const Text('View Resume'),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: ElevatedButton(
-                    onPressed: _shortListCandidate,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.purple,
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    child: const Text('ShortList'),
-                  ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: ElevatedButton(
-                onPressed: _rejectCandidate,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.red,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                child: const Text('Reject'),
-              ),
-            ),
-          ],
-        ),
-      ),
+            );
+          }),
     );
   }
 }

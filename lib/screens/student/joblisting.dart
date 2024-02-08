@@ -60,7 +60,7 @@ class _JobListingState extends State<JobListing> {
               stream: _firestore.collection('jobs').snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  return const CircularProgressIndicator();
+                  return const Center(child: CircularProgressIndicator());
                 }
 
                 var jobList = snapshot.data!.docs;

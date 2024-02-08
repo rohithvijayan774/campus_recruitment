@@ -165,7 +165,7 @@ class _StudentLogInState extends State<StudentLogIn> {
                           );
                         },
                         child: const Text(
-                          " Signup",
+                          "Signup",
                           style: TextStyle(
                               color: Colors.blue,
                               fontSize: 15.0,
@@ -192,12 +192,11 @@ class _StudentLogInState extends State<StudentLogIn> {
         print('User ID: $userId');
 
         // Navigate to the BottomNavigation screen
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const BottomNavigation(),
-          ),
-        );
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => const StudentBottomNavigation(),
+            ),
+            (route) => false);
       }
 
       // If the above line doesn't throw an exception, the login is successful.

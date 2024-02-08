@@ -66,7 +66,7 @@ class _JobApplicationState extends State<JobApplication> {
   Future<void> submitApplication() async {
     String jobName = widget.jobTitle;
     String jobAddress = widget.address;
-    String jobTitle = 'Selected Job Title';
+    String jobTitle = widget.jobTitle;
     String username = fullNameController.text;
     String email = emailController.text;
 
@@ -123,7 +123,7 @@ class _JobApplicationState extends State<JobApplication> {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const BottomNavigation(),
+                        builder: (context) => const StudentBottomNavigation(),
                       ),
                     );
                   },

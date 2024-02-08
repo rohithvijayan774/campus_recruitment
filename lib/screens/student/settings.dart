@@ -1,4 +1,5 @@
 import 'package:campus_recruitment/screens/student/first.dart';
+import 'package:campus_recruitment/screens/student/start.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart'
@@ -66,10 +67,14 @@ class _SettingsState extends State<Settings> {
     });
   }
 
-  Future<void> _logout() async {
+  Future<void> _logout(context) async {
     try {
       await _auth.signOut();
-      Navigator.pushReplacementNamed(context, '/studentlogin');
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (context) => const StartPage(),
+          ),
+          (route) => false);
     } catch (e) {
       print("Error during logout: $e");
     }
@@ -129,7 +134,7 @@ class _SettingsState extends State<Settings> {
               ),
             ),
             child: ListTile(
-              leading: CircleAvatar(
+              leading: const CircleAvatar(
                 backgroundImage: AssetImage('assets/person.png'),
               ),
               title: Text(name),
@@ -171,18 +176,13 @@ class _SettingsState extends State<Settings> {
               leading: const Icon(Icons.logout, color: Colors.blue, size: 30),
               trailing: GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const LandingPage(),
-                    ),
-                  );
+                  _logout(context);
                 },
                 child: const Icon(Icons.arrow_right_alt,
                     color: Colors.blue), // Add color to the arrow button
               ),
               onTap: () {
-                _logout();
+                _logout(context);
               },
             ),
           ),

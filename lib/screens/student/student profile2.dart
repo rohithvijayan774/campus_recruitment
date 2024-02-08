@@ -166,223 +166,224 @@ class _StudentProfile2State extends State<StudentProfile2> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
-          future: _getUserDetails(),
-          builder: (context, snapshot) {
-            return snapshot.connectionState == ConnectionState.waiting
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Container(
-                          height: 300,
-                          width: double.infinity,
-                          decoration: const BoxDecoration(
-                            color: Colors.blue,
-                            borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(20),
-                              bottomRight: Radius.circular(20),
-                            ),
-                          ),
-                          child: Stack(
-                            children: [
-                              Positioned(
-                                top: 16,
-                                right: 16,
-                                child: TextButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const StudentProfile(),
-                                      ),
-                                    );
-                                  },
-                                  style: TextButton.styleFrom(
-                                    backgroundColor: Colors.white,
-                                  ),
-                                  child: const Text(
-                                    "Done",
-                                    style: TextStyle(
-                                      color: Colors.blue,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Center(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    pickImage();
-                                  },
-                                  child: Container(
-                                    width: 150,
-                                    height: 150,
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.white,
-                                    ),
-                                    child: Center(
-                                      child: pickedImage != null
-                                          ? ClipOval(
-                                              child: Image.file(
-                                                pickedImage!,
-                                                fit: BoxFit.cover,
-                                                width: 150,
-                                                height: 150,
-                                              ),
-                                            )
-                                          : const Icon(
-                                              Icons.add,
-                                              color: Colors.blue,
-                                              size: 40,
-                                            ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
+        future: _getUserDetails(),
+        builder: (context, snapshot) {
+          return snapshot.connectionState == ConnectionState.waiting
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 300,
+                        width: double.infinity,
+                        decoration: const BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(20),
+                            bottomRight: Radius.circular(20),
                           ),
                         ),
-                        Container(
-                          margin: const EdgeInsets.only(top: 30),
-                          padding: const EdgeInsets.all(16),
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(20),
-                              topRight: Radius.circular(20),
-                            ),
-                          ),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: TextFormField(
-                                      // initialValue: _name.text,
-                                      controller: _name,
-                                      decoration: InputDecoration(
-                                        labelText: 'First Name',
-                                        border: _customBorder(),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 16),
-                                  Expanded(
-                                    child: TextFormField(
-                                      // initialValue: _lastName.text,
-                                      controller: _lastName,
-                                      decoration: InputDecoration(
-                                        labelText: 'Last Name',
-                                        border: _customBorder(),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 16),
-                              TextFormField(
-                                // initialValue: _email.text,
-                                controller: _email,
-                                decoration: InputDecoration(
-                                  labelText: 'Email',
-                                  border: _customBorder(),
-                                ),
-                              ),
-                              const SizedBox(height: 16),
-                              TextFormField(
-                                // initialValue: _field.text,
-                                controller: _field,
-                                decoration: InputDecoration(
-                                  labelText: 'Field',
-                                  border: _customBorder(),
-                                ),
-                              ),
-                              const SizedBox(height: 16),
-                              TextFormField(
-                                // initialValue: _dob.text,
-                                controller: _dob,
-                                decoration: InputDecoration(
-                                  labelText: 'Date of Birth',
-                                  border: _customBorder(),
-                                ),
-                              ),
-                              const SizedBox(height: 16),
-                              TextFormField(
-                                // initialValue: _phoneNumber.text,
-                                controller: _phoneNumber,
-                                decoration: InputDecoration(
-                                  labelText: 'Phone Number',
-                                  border: _customBorder(),
-                                ),
-                              ),
-                              const SizedBox(height: 16),
-                              TextFormField(
-                                // initialValue: _gender.text,
-                                controller: _gender,
-                                decoration: InputDecoration(
-                                  labelText: 'Gender',
-                                  border: _customBorder(),
-                                ),
-                              ),
-                              const SizedBox(height: 16),
-                              TextFormField(
-                                // initialValue: _experience.text,
-                                controller: _experience,
-                                decoration: InputDecoration(
-                                  labelText: 'Experience',
-                                  border: _customBorder(),
-                                ),
-                              ),
-                              const SizedBox(height: 16),
-                              TextFormField(
-                                // initialValue: _qualification.text,
-                                controller: _qualification,
-                                decoration: InputDecoration(
-                                  labelText: 'Qualification',
-                                  border: _customBorder(),
-                                ),
-                              ),
-                              const SizedBox(height: 16),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: TextFormField(
-                                      // initialValue: _skills.text,
-                                      controller: _skills,
-                                      decoration: InputDecoration(
-                                        labelText: 'Skills',
-                                        border: _customBorder(),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 16),
-                                  ElevatedButton.icon(
-                                    onPressed: () {
-                                      pickResume();
-                                    },
-                                    icon: const Icon(Icons.attach_file),
-                                    label: const Text('Add Resume'),
-                                  ),
-                                ],
-                              ),
-                              ElevatedButton(
+                        child: Stack(
+                          children: [
+                            Positioned(
+                              top: 16,
+                              right: 16,
+                              child: TextButton(
                                 onPressed: () {
-                                  _updateUserDetails();
-                                  Navigator.of(context).pop(true);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const StudentProfile(),
+                                    ),
+                                  );
                                 },
-                                child: const Text('Done'),
+                                style: TextButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                ),
+                                child: const Text(
+                                  "Done",
+                                  style: TextStyle(
+                                    color: Colors.blue,
+                                    fontSize: 16,
+                                  ),
+                                ),
                               ),
-                            ],
+                            ),
+                            Center(
+                              child: GestureDetector(
+                                onTap: () {
+                                  pickImage();
+                                },
+                                child: Container(
+                                  width: 150,
+                                  height: 150,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white,
+                                  ),
+                                  child: Center(
+                                    child: pickedImage != null
+                                        ? ClipOval(
+                                            child: Image.file(
+                                              pickedImage!,
+                                              fit: BoxFit.cover,
+                                              width: 150,
+                                              height: 150,
+                                            ),
+                                          )
+                                        : const Icon(
+                                            Icons.add,
+                                            color: Colors.blue,
+                                            size: 40,
+                                          ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(top: 30),
+                        padding: const EdgeInsets.all(16),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            topRight: Radius.circular(20),
                           ),
                         ),
-                      ],
-                    ),
-                  );
-          }),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: TextFormField(
+                                    // initialValue: _name.text,
+                                    controller: _name,
+                                    decoration: InputDecoration(
+                                      labelText: 'First Name',
+                                      border: _customBorder(),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: TextFormField(
+                                    // initialValue: _lastName.text,
+                                    controller: _lastName,
+                                    decoration: InputDecoration(
+                                      labelText: 'Last Name',
+                                      border: _customBorder(),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 16),
+                            TextFormField(
+                              // initialValue: _email.text,
+                              controller: _email,
+                              decoration: InputDecoration(
+                                labelText: 'Email',
+                                border: _customBorder(),
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            TextFormField(
+                              // initialValue: _field.text,
+                              controller: _field,
+                              decoration: InputDecoration(
+                                labelText: 'Field',
+                                border: _customBorder(),
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            TextFormField(
+                              // initialValue: _dob.text,
+                              controller: _dob,
+                              decoration: InputDecoration(
+                                labelText: 'Date of Birth',
+                                border: _customBorder(),
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            TextFormField(
+                              // initialValue: _phoneNumber.text,
+                              controller: _phoneNumber,
+                              decoration: InputDecoration(
+                                labelText: 'Phone Number',
+                                border: _customBorder(),
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            TextFormField(
+                              // initialValue: _gender.text,
+                              controller: _gender,
+                              decoration: InputDecoration(
+                                labelText: 'Gender',
+                                border: _customBorder(),
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            TextFormField(
+                              // initialValue: _experience.text,
+                              controller: _experience,
+                              decoration: InputDecoration(
+                                labelText: 'Experience',
+                                border: _customBorder(),
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            TextFormField(
+                              // initialValue: _qualification.text,
+                              controller: _qualification,
+                              decoration: InputDecoration(
+                                labelText: 'Qualification',
+                                border: _customBorder(),
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: TextFormField(
+                                    // initialValue: _skills.text,
+                                    controller: _skills,
+                                    decoration: InputDecoration(
+                                      labelText: 'Skills',
+                                      border: _customBorder(),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 16),
+                                ElevatedButton.icon(
+                                  onPressed: () {
+                                    pickResume();
+                                  },
+                                  icon: const Icon(Icons.attach_file),
+                                  label: const Text('Add Resume'),
+                                ),
+                              ],
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                _updateUserDetails();
+                                Navigator.of(context).pop(true);
+                              },
+                              child: const Text('Done'),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+        },
+      ),
     );
   }
 }

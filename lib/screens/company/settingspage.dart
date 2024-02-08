@@ -24,12 +24,12 @@ class _CompanySettingsPageState extends State<CompanySettingsPage> {
     _loadCompanyInfo();
 
     // Example of a timer that triggers setState
-    _timer = Timer.periodic(Duration(seconds: 1), (Timer timer) {
-      _updateStateEverySecond();
-    });
+    // _timer = Timer.periodic(Duration(seconds: 1), (Timer timer) {
+    //   _updateStateEverySecond();
+    // });
   }
 
-  Future<void> _loadCompanyInfo() async {
+  Future _loadCompanyInfo() async {
     try {
       User? user = _auth.currentUser;
 
@@ -41,9 +41,7 @@ class _CompanySettingsPageState extends State<CompanySettingsPage> {
 
         if (snapshot.exists) {
           if (mounted) {
-            setState(() {
-              companyname = snapshot['companyname'];
-            });
+            companyname = snapshot['companyname'];
           }
         }
       }
@@ -73,20 +71,20 @@ class _CompanySettingsPageState extends State<CompanySettingsPage> {
     Navigator.pushNamed(context, '/feedbackpage');
   }
 
-  void _updateStateEverySecond() {
-    if (mounted) {
-      setState(() {
-        // Your state update logic here
-      });
-    }
-  }
+  // void _updateStateEverySecond() {
+  //   if (mounted) {
+  //     setState(() {
+  //       // Your state update logic here
+  //     });
+  //   }
+  // }
 
-  @override
-  void dispose() {
-    // Cancel the timer to avoid calling setState after the widget is disposed
-    _timer.cancel();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   // Cancel the timer to avoid calling setState after the widget is disposed
+  //   _timer.cancel();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -94,80 +92,88 @@ class _CompanySettingsPageState extends State<CompanySettingsPage> {
       appBar: AppBar(
         title: const Text('Settings'),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              'Account',
-              style: TextStyle(color: Colors.grey, fontSize: 20),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Card(
-              child: ListTile(
-                leading: const CircleAvatar(
-                  backgroundImage: AssetImage('assets/person.png'),
-                ),
-                title: Text(companyname),
-              ),
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              'GENERAL',
-              style: TextStyle(color: Colors.grey),
-            ),
-          ),
-          ListTile(
-            leading: const Icon(
-              Icons.notifications_none_outlined,
-              color: Colors.purpleAccent,
-            ),
-            title: const Text('Notification'),
-            trailing: Switch(
-              value: isNotificationEnabled,
-              onChanged: _toggleNotification,
-              activeColor: Colors.purpleAccent,
-            ),
-          ),
-          // ListTile(
-          //   leading: const Icon(
-          //     Icons.poll_rounded,
-          //     color: Colors.purpleAccent,
-          //   ),
-          //   title: const Text('Feedback'),
-          //   trailing: const Icon(
-          //     Icons.arrow_forward,
-          //     color: Colors.grey,
-          //     size: 30,
-          //   ),
-          //   onTap: _navigateToFeedbackPage,
-          // ),
-          ListTile(
-            leading: const Icon(
-              Icons.logout,
-              color: Colors.purpleAccent,
-            ),
-            title: const Text('Logout'),
-            trailing: const Icon(
-              Icons.arrow_forward,
-              color: Colors.grey,
-              size: 30,
-            ),
-            onTap: () {
-              Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(
-                    builder: (context) => const StartPage(),
-                  ),
-                  (route) => false);
-            },
-          ),
-        ],
-      ),
+      body: FutureBuilder(
+          future: _loadCompanyInfo(),
+          builder: (context, snapshot) {
+            return snapshot.connectionState == ConnectionState.waiting
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                          'Account',
+                          style: TextStyle(color: Colors.grey, fontSize: 20),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Card(
+                          child: ListTile(
+                            leading: const CircleAvatar(
+                              backgroundImage: AssetImage('assets/person.png'),
+                            ),
+                            title: Text(companyname),
+                          ),
+                        ),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                          'GENERAL',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      ),
+                      ListTile(
+                        leading: const Icon(
+                          Icons.notifications_none_outlined,
+                          color: Colors.purpleAccent,
+                        ),
+                        title: const Text('Notification'),
+                        trailing: Switch(
+                          value: isNotificationEnabled,
+                          onChanged: _toggleNotification,
+                          activeColor: Colors.purpleAccent,
+                        ),
+                      ),
+                      // ListTile(
+                      //   leading: const Icon(
+                      //     Icons.poll_rounded,
+                      //     color: Colors.purpleAccent,
+                      //   ),
+                      //   title: const Text('Feedback'),
+                      //   trailing: const Icon(
+                      //     Icons.arrow_forward,
+                      //     color: Colors.grey,
+                      //     size: 30,
+                      //   ),
+                      //   onTap: _navigateToFeedbackPage,
+                      // ),
+                      ListTile(
+                        leading: const Icon(
+                          Icons.logout,
+                          color: Colors.purpleAccent,
+                        ),
+                        title: const Text('Logout'),
+                        trailing: const Icon(
+                          Icons.arrow_forward,
+                          color: Colors.grey,
+                          size: 30,
+                        ),
+                        onTap: () {
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                builder: (context) => const StartPage(),
+                              ),
+                              (route) => false);
+                        },
+                      ),
+                    ],
+                  );
+          }),
     );
   }
 }

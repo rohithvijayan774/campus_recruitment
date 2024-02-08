@@ -161,7 +161,7 @@ class _CompanyLogInState extends State<CompanyLogIn> {
                             child: Text(
                               "Don't have an Account? Create one using",
                               style: TextStyle(
-                                  color: Colors.black, fontSize: 15.0),
+                                  color: Colors.black, fontSize: 10.0),
                             ),
                           ),
                           const SizedBox(
@@ -177,7 +177,7 @@ class _CompanyLogInState extends State<CompanyLogIn> {
                               );
                             },
                             child: const Text(
-                              " Signup",
+                              "Signup",
                               style: TextStyle(
                                   color: Colors.blue,
                                   fontSize: 15.0,
