@@ -226,7 +226,7 @@ class _CompanyViewStudentProfileState extends State<CompanyViewStudentProfile> {
   var phone_number = TextEditingController();
   var age = TextEditingController();
   var gender = TextEditingController();
-  var experience = TextEditingController();
+  var cgpa = TextEditingController();
   var qualification = TextEditingController();
   var certification = TextEditingController();
   var skills = TextEditingController();
@@ -258,7 +258,7 @@ class _CompanyViewStudentProfileState extends State<CompanyViewStudentProfile> {
         dob.text = userData['dob'] ?? '';
         phone_number.text = userData['phone'] ?? '';
         gender.text = userData['gender'] ?? '';
-        experience.text = userData['experience'] ?? '';
+        cgpa.text = userData['cgpa'] ?? '';
         qualification.text = userData['qualification'] ?? '';
         certification.text = userData['certification'] ?? '';
         skills.text = userData['skills'] ?? '';
@@ -412,13 +412,13 @@ class _CompanyViewStudentProfileState extends State<CompanyViewStudentProfile> {
                           padding: const EdgeInsets.all(15.0),
                           child: TextFormField(
                             readOnly: true,
-                            controller: experience,
+                            controller: cgpa,
                             decoration: InputDecoration(
-                              labelText: 'Experience',
+                              labelText: 'CGPA',
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              hintText: 'Experience',
+                              hintText: 'CGPA',
                             ),
                           ),
                         ),

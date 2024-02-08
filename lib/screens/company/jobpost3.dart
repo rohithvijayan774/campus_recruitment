@@ -1,3 +1,4 @@
+import 'package:campus_recruitment/screens/company/bottomnavigation.dart';
 import 'package:campus_recruitment/screens/company/jobpost4.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -82,16 +83,15 @@ class _Jobpost3State extends State<Jobpost3> {
                         'currentSalary': currentSalaryController.text,
                         'expectedSalary': expectedSalaryController.text,
                         // Add more fields as needed
-                      });
+                      }).then((value) =>
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const CompanyBottomNavigations(),
+                                  ),
+                                  (route) => false));
 
                       // Navigate to the next screen (Jobpost4) and pass the document ID
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              Jobpost4(jobDocumentId: widget.documentId),
-                        ),
-                      );
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,

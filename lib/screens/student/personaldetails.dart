@@ -18,7 +18,7 @@ class _PersonalDetailsState extends State<PersonalDetails> {
   String? _dob;
   String? _phoneNumber;
   String? _gender;
-  String? _experience;
+  String? _cgpa;
   String? _qualification;
   String? _skills;
 
@@ -44,7 +44,7 @@ class _PersonalDetailsState extends State<PersonalDetails> {
             _dob = data['dob'] ?? '';
             _phoneNumber = data['phoneNumber'] ?? '';
             _gender = data['gender'] ?? '';
-            _experience = data['experience'] ?? '';
+            _cgpa = data['CGPA'] ?? '';
             _qualification = data['qualification'] ?? '';
             _skills = data['skill'] ?? '';
           } else {
@@ -207,14 +207,14 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                                 const SizedBox(height: 16),
                                 TextFormField(
                                   readOnly: true,
-                                  initialValue: _experience,
+                                  initialValue: _cgpa,
                                   onChanged: (value) {
                                     setState(() {
-                                      _experience = value;
+                                      _cgpa = value;
                                     });
                                   },
                                   decoration: InputDecoration(
-                                    labelText: 'Experience',
+                                    labelText: 'CGPA',
                                     border: _customBorder(),
                                   ),
                                 ),

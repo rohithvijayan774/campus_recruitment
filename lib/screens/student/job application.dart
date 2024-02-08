@@ -19,7 +19,7 @@ class JobApplication extends StatefulWidget {
   final String userQualification;
   final String userGender;
   final String userSkills;
-  final String experience;
+  final String cgpa;
 
   const JobApplication({
     Key? key,
@@ -34,7 +34,7 @@ class JobApplication extends StatefulWidget {
     required this.userQualification,
     required this.userGender,
     required this.userSkills,
-    required this.experience,
+    required this.cgpa,
   }) : super(key: key);
 
   @override
@@ -93,7 +93,7 @@ class _JobApplicationState extends State<JobApplication> {
       'dob': widget.userDOB,
       'phone': widget.userNumber,
       'gender': widget.userGender,
-      'experience': widget.experience,
+      'cgpa': widget.cgpa,
       'qualification': widget.userQualification,
       'certificate': certificate,
       'skills': widget.userSkills,

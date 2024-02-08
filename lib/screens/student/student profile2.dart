@@ -27,7 +27,7 @@ class _StudentProfile2State extends State<StudentProfile2> {
   TextEditingController _dob = TextEditingController();
   TextEditingController _phoneNumber = TextEditingController();
   TextEditingController _gender = TextEditingController();
-  TextEditingController _experience = TextEditingController();
+  TextEditingController _cgpa = TextEditingController();
   TextEditingController _qualification = TextEditingController();
   TextEditingController _skills = TextEditingController();
 
@@ -53,7 +53,7 @@ class _StudentProfile2State extends State<StudentProfile2> {
             _dob.text = data['dob'] ?? '';
             _phoneNumber.text = data['phoneNumber'] ?? '';
             _gender.text = data['gender'] ?? '';
-            _experience.text = data['experience'] ?? '';
+            _cgpa.text = data['CGPA'] ?? '';
             _qualification.text = data['qualification'] ?? '';
             _skills.text = data['skill'] ?? '';
           } else {
@@ -92,7 +92,7 @@ class _StudentProfile2State extends State<StudentProfile2> {
         'dob': _dob.text,
         'phoneNumber': _phoneNumber.text,
         'gender': _gender.text,
-        'experience': _experience.text,
+        'CGPA': _cgpa.text,
         'qualification': _qualification.text,
         'skill': _skills.text,
       });
@@ -330,10 +330,10 @@ class _StudentProfile2State extends State<StudentProfile2> {
                             ),
                             const SizedBox(height: 16),
                             TextFormField(
-                              // initialValue: _experience.text,
-                              controller: _experience,
+                              // initialValue: _cgpa.text,
+                              controller: _cgpa,
                               decoration: InputDecoration(
-                                labelText: 'Experience',
+                                labelText: 'CGPA',
                                 border: _customBorder(),
                               ),
                             ),

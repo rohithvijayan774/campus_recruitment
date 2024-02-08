@@ -167,7 +167,7 @@ class _AppliedJobsState extends State<AppliedJobs> {
     QuerySnapshot querySnapshot = await firestore
         .collection('applied_jobs')
         .where('userId', isEqualTo: userId)
-        .where('status', isEqualTo: 'Completed')
+        .where('status', isEqualTo: 'rejected')
         .get();
 
     print('//////////FETCHING JOBS COMPLETED///////////////////');

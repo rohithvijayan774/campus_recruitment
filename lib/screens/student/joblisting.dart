@@ -65,21 +65,26 @@ class _JobListingState extends State<JobListing> {
 
                 var jobList = snapshot.data!.docs;
 
-                return ListView.builder(
-                  itemCount: jobList.length,
-                  itemBuilder: (context, index) {
-                    var companyname = jobList[index]['companyname'] as String?;
-                    var jobTitle = jobList[index]['jobTitle'] as String?;
+                return jobList.isEmpty
+                    ? const Center(
+                        child: Text('No Jobs Found'),
+                      )
+                    : ListView.builder(
+                        itemCount: jobList.length,
+                        itemBuilder: (context, index) {
+                          var companyname =
+                              jobList[index]['companyname'] as String?;
+                          var jobTitle = jobList[index]['jobTitle'] as String?;
 
-                    // Check if fields are not null before using them
-                    if (companyname != null && jobTitle != null) {
-                      return buildJobCard(context, companyname, jobTitle);
-                    } else {
-                      // Handle the case where fields are null or not present
-                      return Container();
-                    }
-                  },
-                );
+                          // Check if fields are not null before using them
+                          if (companyname != null && jobTitle != null) {
+                            return buildJobCard(context, companyname, jobTitle);
+                          } else {
+                            // Handle the case where fields are null or not present
+                            return Container();
+                          }
+                        },
+                      );
               },
             ),
           ),

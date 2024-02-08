@@ -42,8 +42,10 @@ class _AdminHomeState extends State<AdminHome> {
             .map(
                 (QueryDocumentSnapshot<Map<String, dynamic>> doc) => doc.data())
             .toList();
+            
 
         _eventsStreamController.add(events);
+        
       },
       onError: (error) {
         print('Error retrieving events: $error');
@@ -63,120 +65,94 @@ class _AdminHomeState extends State<AdminHome> {
     showDialog<void>(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Add Event'),
-          content: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                TextField(
-                  decoration: const InputDecoration(labelText: 'Event Name'),
-                  onChanged: (value) {
-                    eventName = value;
-                  },
-                ),
-                Row(
-                  children: <Widget>[
-                    Text(
-                        'Event Date: ${DateFormat('yyyy-MM-dd').format(eventDate)}'),
-                    IconButton(
-                      icon: const Icon(Icons.calendar_today),
-                      onPressed: () async {
-                        DateTime? pickedDate = await showDatePicker(
-                          context: context,
-                          initialDate: eventDate,
-                          firstDate: DateTime.now(),
-                          lastDate: DateTime(2101),
-                        );
-                        if (pickedDate != null && pickedDate != eventDate) {
-                          setState(() {
-                            eventDate = pickedDate;
-                          });
-                        }
-                      },
-                    ),
-                  ],
-                ),
-                Row(
-                  children: <Widget>[
-                    Text('Event Time: ${eventTime.format(context)}'),
-                    IconButton(
-                      icon: const Icon(Icons.access_time),
-                      onPressed: () async {
-                        TimeOfDay? pickedTime = await showTimePicker(
-                          context: context,
-                          initialTime: eventTime,
-                        );
-                        if (pickedTime != null && pickedTime != eventTime) {
-                          setState(() {
-                            eventTime = pickedTime;
-                          });
-                        }
-                      },
-                    ),
-                  ],
-                ),
-                TextField(
-                  decoration:
-                      const InputDecoration(labelText: 'Event Location'),
-                  onChanged: (value) {
-                    eventLocation = value;
-                  },
-                ),
-              ],
+        return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+          return AlertDialog(
+            title: const Text('Add Event'),
+            content: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  TextField(
+                    decoration: const InputDecoration(labelText: 'Event Name'),
+                    onChanged: (value) {
+                      eventName = value;
+                    },
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Text(
+                          'Event Date: ${DateFormat('dd-MM-yyyy').format(eventDate)}'),
+                      IconButton(
+                        icon: const Icon(Icons.calendar_today),
+                        onPressed: () async {
+                          DateTime? pickedDate = await showDatePicker(
+                            context: context,
+                            initialDate: eventDate,
+                            firstDate: DateTime.now(),
+                            lastDate: DateTime(2101),
+                          );
+                          if (pickedDate != null && pickedDate != eventDate) {
+                            setState(() {
+                              eventDate = pickedDate;
+                            });
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Text('Event Time: ${eventTime.format(context)}'),
+                      IconButton(
+                        icon: const Icon(Icons.access_time),
+                        onPressed: () async {
+                          TimeOfDay? pickedTime = await showTimePicker(
+                            context: context,
+                            initialTime: eventTime,
+                          );
+                          if (pickedTime != null && pickedTime != eventTime) {
+                            setState(() {
+                              eventTime = pickedTime;
+                            });
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                  TextField(
+                    decoration:
+                        const InputDecoration(labelText: 'Event Location'),
+                    onChanged: (value) {
+                      eventLocation = value;
+                    },
+                  ),
+                ],
+              ),
             ),
-          ),
-          actions: <Widget>[
-            // TextButton(
-            //   child: Text('Pick Image'),
-            //   onPressed: () async {
-            //     pickedImage =
-            //         await picker.pickImage(source: ImageSource.gallery);
-            //   },
-            // ),
-            TextButton(
-              child: const Text('Add'),
-              onPressed: () async {
-                await FirebaseFirestore.instance.collection('events').add({
-                  'eventName': eventName,
-                  'eventDate':
-                      eventDate.toUtc().toIso8601String().split('T')[0],
-                  'eventTime': eventTime.format(context),
-                  'eventLocation': eventLocation,
-                  // 'eventImageURL': downloadURL,
-                });
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Add'),
+                onPressed: () async {
+                  await FirebaseFirestore.instance.collection('events').add({
+                    'eventName': eventName,
+                    'eventDate': eventDate.toIso8601String().split('T')[0],
+                    'eventTime': eventTime.format(context),
+                    'eventLocation': eventLocation,
+                    // 'eventImageURL': downloadURL,
+                  });
 
-                // if (pickedImage != null) {
-                //   Reference storageReference = FirebaseStorage.instance
-                //       .ref()
-                //       .child('events/${DateTime.now().toString()}');
-                //   UploadTask uploadTask =
-                //       storageReference.putFile(File(pickedImage!.path));
-
-                //   await uploadTask.whenComplete(() async {
-                //     String downloadURL =
-                //         await storageReference.getDownloadURL();
-
-                //     await FirebaseFirestore.instance.collection('events').add({
-                //       'eventName': eventName,
-                //       'eventDate': eventDate,
-                //       'eventTime': eventTime.format(context),
-                //       'eventLocation': eventLocation,
-                //       'eventImageURL': downloadURL,
-                //     });
-                //   });
-                // }
-
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: const Text('Cancel'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
       },
     );
   }
@@ -261,48 +237,54 @@ class _AdminHomeState extends State<AdminHome> {
 
                   List<Map<String, dynamic>> events = snapshot.data!;
 
-                  return // Inside your ListView.builder
-                      ListView.builder(
-                    itemBuilder: (context, index) {
-                      Map<String, dynamic> event = events[index];
+                  return events.isEmpty
+                      ? const Center(
+                          child: Text('No Events Found'),
+                        )
+                      : ListView.builder(
+                          itemBuilder: (context, index) {
+                            Map<String, dynamic> event = events[index];
 
-                      return Card(
-                        child: ListTile(
-                          leading: Container(
-                            width: 90,
-                            height: 90,
-                            decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage('assets/events.jpg'),
-                                fit: BoxFit.cover,
+                            return Card(
+                              child: ListTile(
+                                trailing: IconButton(
+                                    onPressed: () {},
+                                    icon: const Icon(Icons.close)),
+                                leading: Container(
+                                  width: 90,
+                                  height: 90,
+                                  decoration: const BoxDecoration(
+                                    image: DecorationImage(
+                                      image: AssetImage('assets/events.jpg'),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Event Name: ${event['eventName']}',
+                                      style: const TextStyle(
+                                          fontSize: 20, color: Colors.black),
+                                    ),
+                                    Text(
+                                      'Event Date: ${event['eventDate']}',
+                                      style: const TextStyle(
+                                          fontSize: 16, color: Colors.black),
+                                    ),
+                                    Text(
+                                      'Event Location: ${event['eventLocation']}',
+                                      style: const TextStyle(
+                                          fontSize: 16, color: Colors.black),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ),
-                          title: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Event Name: ${event['eventName']}',
-                                style: const TextStyle(
-                                    fontSize: 20, color: Colors.black),
-                              ),
-                              Text(
-                                'Event Date: ${event['eventDate']}',
-                                style: const TextStyle(
-                                    fontSize: 16, color: Colors.black),
-                              ),
-                              Text(
-                                'Event Location: ${event['eventLocation']}',
-                                style: const TextStyle(
-                                    fontSize: 16, color: Colors.black),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                    itemCount: events.length,
-                  );
+                            );
+                          },
+                          itemCount: events.length,
+                        );
                 },
               ),
             ),

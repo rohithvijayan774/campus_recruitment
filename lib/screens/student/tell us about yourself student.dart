@@ -14,7 +14,7 @@ class _TellusstudentState extends State<Tellusstudent> {
   TextEditingController livecontroller = TextEditingController();
   TextEditingController gendercontroller = TextEditingController();
   TextEditingController qualificationcontroller = TextEditingController();
-  TextEditingController expericontroller = TextEditingController();
+  TextEditingController cgpaController = TextEditingController();
   TextEditingController skillcontroller = TextEditingController();
   TextEditingController pincodecontroller = TextEditingController();
   final _formkey = GlobalKey<FormState>();
@@ -106,9 +106,9 @@ class _TellusstudentState extends State<Tellusstudent> {
                           borderRadius: BorderRadius.circular(8.0),
                         ),
                         child: TextFormField(
-                          controller: expericontroller,
+                          controller: cgpaController,
                           decoration: const InputDecoration(
-                            hintText: "Year of Experience",
+                            hintText: "CGPA",
                             contentPadding: EdgeInsets.all(12.0),
                             border: InputBorder.none,
                           ),
@@ -271,7 +271,7 @@ class _TellusstudentState extends State<Tellusstudent> {
           await userDocRef.update({
             'gender': gendercontroller.text,
             'live': livecontroller.text,
-            'experience': expericontroller.text,
+            'CGPA': cgpaController.text,
             'qualification': qualificationcontroller.text,
             'skill': skillcontroller.text,
             'pincode': pincodecontroller.text,
@@ -281,7 +281,7 @@ class _TellusstudentState extends State<Tellusstudent> {
           await userDocRef.set({
             'gender': gendercontroller.text,
             'live': livecontroller.text,
-            'experience': expericontroller.text,
+            'CGPA': cgpaController.text,
             'qualification': qualificationcontroller.text,
             'skill': skillcontroller.text,
             'pincode': pincodecontroller.text,
