@@ -5,6 +5,7 @@ import 'package:campus_recruitment/screens/admin/registerdcompanies.dart';
 import 'package:campus_recruitment/screens/admin/registerdusers.dart';
 import 'package:campus_recruitment/screens/student/start.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -42,10 +43,8 @@ class _AdminHomeState extends State<AdminHome> {
             .map(
                 (QueryDocumentSnapshot<Map<String, dynamic>> doc) => doc.data())
             .toList();
-            
 
         _eventsStreamController.add(events);
-        
       },
       onError: (error) {
         print('Error retrieving events: $error');
@@ -133,13 +132,20 @@ class _AdminHomeState extends State<AdminHome> {
               TextButton(
                 child: const Text('Add'),
                 onPressed: () async {
-                  await FirebaseFirestore.instance.collection('events').add({
+                  final eventCollection =
+                      FirebaseFirestore.instance.collection('events');
+
+                  final ref = await eventCollection.add({
                     'eventName': eventName,
                     'eventDate': eventDate.toIso8601String().split('T')[0],
                     'eventTime': eventTime.format(context),
                     'eventLocation': eventLocation,
                     // 'eventImageURL': downloadURL,
                   });
+
+                  final eventid = ref.id;
+
+                  await ref.update({'eventid': eventid});
 
                   Navigator.of(context).pop();
                 },
@@ -159,6 +165,8 @@ class _AdminHomeState extends State<AdminHome> {
 
   @override
   Widget build(BuildContext context) {
+    print(
+        '///////////////////Admin id : ${FirebaseAuth.instance.currentUser!.uid}');
     return Scaffold(
       appBar: AppBar(
         title: const Text("Campus-Recruitment-Admin"),
@@ -205,12 +213,13 @@ class _AdminHomeState extends State<AdminHome> {
               leading: const Icon(Icons.logout),
               title: const Text("Logout"),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const StartPage(),
-                  ),
-                );
+                FirebaseAuth.instance
+                    .signOut()
+                    .then((value) => Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                          builder: (context) => const StartPage(),
+                        ),
+                        (route) => false));
               },
             ),
           ],
@@ -248,7 +257,39 @@ class _AdminHomeState extends State<AdminHome> {
                             return Card(
                               child: ListTile(
                                 trailing: IconButton(
-                                    onPressed: () {},
+                                    onPressed: () async {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: const Text('Delete Event?'),
+                                            content: const Text(
+                                                'Are you sure, you want to delete this event?'),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: const Text('Cancel'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () async {
+                                                  final eventCollection =
+                                                      FirebaseFirestore.instance
+                                                          .collection('events');
+
+                                                  final eventDoc =
+                                                      eventCollection.doc(
+                                                          event['eventid']);
+                                                  await eventDoc.delete();
+                                                },
+                                                child: const Text('Delete'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
                                     icon: const Icon(Icons.close)),
                                 leading: Container(
                                   width: 90,

@@ -1,5 +1,6 @@
 import 'package:campus_recruitment/screens/student/job%20application.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class JobDetails {
@@ -83,13 +84,49 @@ class _JObview1State extends State<JObview1> {
     }
   }
 
+  String userid = '';
+  String userName = '';
+  String userEmail = '';
+  String userDOB = '';
+  String userGender = '';
+  String userQualification = '';
+  String userSkills = '';
+  String userNumber = '';
+  String cgpa = '';
+  Future fetchUsers() async {
+    try {
+      CollectionReference userCollection =
+          FirebaseFirestore.instance.collection('users');
+      DocumentSnapshot snapshot = await userCollection
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .get();
+
+      if (snapshot.exists) {
+        userid = snapshot.id;
+        userName = snapshot['username'];
+        userEmail = snapshot['email'];
+        userDOB = snapshot['dob'];
+        userGender = snapshot['gender'];
+        userQualification = snapshot['qualification'];
+        userSkills = snapshot['skill'];
+        userNumber = snapshot['phoneNumber'];
+        cgpa = snapshot['CGPA'];
+      }
+
+      print(userName);
+      print(userEmail);
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
         body: FutureBuilder(
-            future: fetchDataFromFirebase(),
+            future: fetchDataFromFirebase().then((value) => fetchUsers()),
             builder: (context, snapshot) {
               return snapshot.connectionState == ConnectionState.waiting
                   ? const Center(
@@ -190,20 +227,29 @@ class _JObview1State extends State<JObview1> {
                                         Center(
                                           child: ElevatedButton(
                                             onPressed: () {
-                                              // Navigator.push(
-                                              //   context,
-                                              //   MaterialPageRoute(
-                                              //       builder: (context) => JobApplication(
-                                              //             userId:
-                                              //                 'pass_logged_user_id_here',
-                                              //             address:
-                                              //                 'pass_logged_user_address_here',
-                                              //             jobTitle:
-                                              //                 widget.jobDetails.jobTitle,
-                                              //             companyname:
-                                              //                 widget.jobDetails.companyname,
-                                              //           )),
-                                              // );
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      JobApplication(
+                                                    userId: userid,
+                                                    address: '',
+                                                    jobTitle: widget
+                                                        .jobDetails.jobTitle,
+                                                    companyname: widget
+                                                        .jobDetails.companyname,
+                                                    userName: userName,
+                                                    userEmail: userEmail,
+                                                    userNumber: userNumber,
+                                                    userDOB: userDOB,
+                                                    userQualification:
+                                                        userQualification,
+                                                    userGender: userGender,
+                                                    userSkills: userSkills,
+                                                    cgpa: cgpa,
+                                                  ),
+                                                ),
+                                              );
                                             },
                                             style: ElevatedButton.styleFrom(
                                               primary: Colors.blue,

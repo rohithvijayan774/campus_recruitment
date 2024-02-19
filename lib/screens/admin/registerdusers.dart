@@ -41,7 +41,7 @@ class RegisteredUsers extends StatelessWidget {
               // Extract fields from the user document with default values
               final name = users[index]['name'] as String? ?? 'N/A';
               final username = users[index]['username'] as String? ?? 'N/A';
-              final field = users[index]['field'] as String? ?? 'N/A';
+              final field = users[index]['field'] as String? ?? 'not available';
               final email = users[index]['email'] as String? ?? 'N/A';
 
               return Card(
@@ -50,17 +50,19 @@ class RegisteredUsers extends StatelessWidget {
                   leading: const Icon(Icons.account_circle, size: 40.0),
                   title: Text(
                     name,
-                    style:
-                        const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 18.0, fontWeight: FontWeight.bold),
                   ),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 8.0),
-                      Text('Email: $email', style: const TextStyle(fontSize: 16.0)),
+                      Text('Email: $email',
+                          style: const TextStyle(fontSize: 16.0)),
                       Text('Username: $username',
                           style: const TextStyle(fontSize: 16.0)),
-                      Text('Field: $field', style: const TextStyle(fontSize: 16.0)),
+                      Text('Field: $field',
+                          style: const TextStyle(fontSize: 16.0)),
                     ],
                   ),
                   onTap: () {

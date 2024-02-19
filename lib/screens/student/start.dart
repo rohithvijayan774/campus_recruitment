@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:campus_recruitment/screens/admin/adminhome.dart';
 import 'package:campus_recruitment/screens/company/bottomnavigation.dart';
 import 'package:campus_recruitment/screens/student/bottom%20navigation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -27,11 +28,17 @@ class _StartPageState extends State<StartPage> {
 
   Future checkLogin(context) async {
     FirebaseAuth auth = FirebaseAuth.instance;
+
     if (auth.currentUser != null) {
+      print('////////////////${auth.currentUser!.uid}');
       final String uid = auth.currentUser!.uid;
 
       final userDoc =
           await FirebaseFirestore.instance.collection('users').doc(uid).get();
+      final companyDoc = await FirebaseFirestore.instance
+          .collection('companies')
+          .doc(uid)
+          .get();
       if (userDoc.exists) {
         await Future.delayed(const Duration(seconds: 2));
         Navigator.of(context).pushAndRemoveUntil(
@@ -39,11 +46,17 @@ class _StartPageState extends State<StartPage> {
               builder: (context) => const StudentBottomNavigation(),
             ),
             (route) => false);
-      } else {
+      } else if (companyDoc.exists) {
         await Future.delayed(const Duration(seconds: 2));
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
               builder: (context) => const CompanyBottomNavigations(),
+            ),
+            (route) => false);
+      } else {
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => const AdminHome(),
             ),
             (route) => false);
       }

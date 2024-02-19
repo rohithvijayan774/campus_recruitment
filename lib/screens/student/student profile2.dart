@@ -71,6 +71,8 @@ class _StudentProfile2State extends State<StudentProfile2> {
       if (pickedImage != null) {
         // Upload profile picture to Firebase Storage
         String profilePicUrl = await _uploadFile(pickedImage!, 'profile_pics');
+        print(profilePicUrl);
+        print("==================================================");
         _updateUserProfilePic(profilePicUrl);
       }
 
@@ -370,8 +372,8 @@ class _StudentProfile2State extends State<StudentProfile2> {
                               ],
                             ),
                             ElevatedButton(
-                              onPressed: () {
-                                _updateUserDetails();
+                              onPressed: ()async {
+                              await  _updateUserDetails();
                                 Navigator.of(context).pop(true);
                               },
                               child: const Text('Done'),

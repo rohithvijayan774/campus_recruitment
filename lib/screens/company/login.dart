@@ -116,13 +116,8 @@ class _CompanyLogInState extends State<CompanyLogIn> {
 
                             if (isLoginSuccessful) {
                               _showSuccessSnackBar("Login successful!");
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const CompanyBottomNavigations(),
-                                ),
-                              );
+                              
+                              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>const CompanyBottomNavigations()), (route) => false);
                             } else {
                               _showErrorSnackBar("Invalid email or password");
                             }

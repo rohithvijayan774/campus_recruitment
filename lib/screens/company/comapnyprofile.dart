@@ -5,6 +5,7 @@ import 'package:campus_recruitment/screens/company/CompanyShowProfile.dart';
 import 'package:campus_recruitment/screens/company/auth_service.dart';
 import 'package:campus_recruitment/screens/company/companyabout.dart';
 import 'package:campus_recruitment/screens/company/notificationpage.dart';
+import 'package:campus_recruitment/screens/company/posted_jobs.dart';
 import 'package:campus_recruitment/screens/company/viewshortlisted.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -112,7 +113,7 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
         title: const Text('Company Profile'),
       ),
       body: FutureBuilder(
-          future: _fetchCompanyDetails(_user!.uid),
+          future: _fetchCompanyDetails(FirebaseAuth.instance.currentUser!.uid),
           builder: (context, snapshot) {
             return snapshot.connectionState == ConnectionState.waiting
                 ? const Center(
@@ -253,7 +254,25 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              const ShortListCandidates()),
+                                              ShortListCandidates(
+                                                companyName:
+                                                    _company!.companyname,
+                                              )),
+                                    );
+                                  },
+                                ),
+                              ),
+                              Card(
+                                child: ListTile(
+                                  leading:
+                                      const Icon(Icons.work_history_outlined),
+                                  title: const Text('Posted Jobs'),
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const PostedJobs()),
                                     );
                                   },
                                 ),

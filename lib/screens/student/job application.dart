@@ -46,7 +46,7 @@ class _JobApplicationState extends State<JobApplication> {
   TextEditingController fullNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
-
+ final _formKey=GlobalKey<FormState>();
   String dob = '';
   String phone = '';
   String gender = '';
@@ -72,16 +72,15 @@ class _JobApplicationState extends State<JobApplication> {
     String username = fullNameController.text;
     String email = emailController.text;
 
-    if (resumeFile != null) {
+if(_formKey.currentState!.validate()){
+  if (resumeFile != null) {
       Reference storageReference = FirebaseStorage.instance
           .ref()
           .child('resumes/${DateTime.now().toString()}');
       await storageReference.putFile(resumeFile!);
       String resumeUrl = await storageReference.getDownloadURL();
-      // Store resumeUrl in Firestore or use it as needed
-    }
 
-    var firestore = FirebaseFirestore.instance;
+var firestore = FirebaseFirestore.instance;
     await firestore.collection('applied_jobs').add({
       'userId': widget.userId,
       'jobName': jobName,
@@ -101,7 +100,9 @@ class _JobApplicationState extends State<JobApplication> {
       // Add other fields as needed
     });
 
-    showDialog(
+
+
+  showDialog(
       context: context,
       builder: (BuildContext context) {
         return Dialog(
@@ -123,12 +124,7 @@ class _JobApplicationState extends State<JobApplication> {
                 const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const StudentBottomNavigation(),
-                      ),
-                    );
+                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>const StudentBottomNavigation(),), (route) => false,);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue,
@@ -136,27 +132,27 @@ class _JobApplicationState extends State<JobApplication> {
                   child: const Text('Home'),
                 ),
                 const SizedBox(height: 16),
-                OutlinedButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const AppliedJobs(),
-                      ),
-                    );
-                    Navigator.pop(context);
-                  },
-                  style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: Colors.blue),
-                  ),
-                  child: const Text('See Application'),
-                ),
+                
               ],
             ),
           ),
         );
       },
     );
+
+
+
+
+      // Store resumeUrl in Firestore or use it as needed
+    }
+
+    
+
+   
+
+
+
+}
   }
 
   @override
@@ -165,109 +161,137 @@ class _JobApplicationState extends State<JobApplication> {
       body: Padding(
         padding: const EdgeInsets.only(top: 50.0, left: 15, right: 15),
         child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text(
-                  'Apply for Job',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
+          child: Form(
+            key:_formKey ,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    'Apply for Job',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              const Padding(
-                padding: EdgeInsets.all(12.0),
-                child: Text('Full Name'),
-              ),
-              TextFormField(
-                controller: fullNameController,
-                decoration: const InputDecoration(
-                  labelText: 'Enter your full name',
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(width: 1.0),
+                const SizedBox(height: 20),
+                const Padding(
+                  padding: EdgeInsets.all(12.0),
+                  child: Text('Full Name'),
+                ),
+                TextFormField(
+                  validator: (value) {
+                    if(value!.isEmpty){
+                      return "The Field is required";
+                    }else{
+                      return null;
+                    }
+                  },
+                  controller: fullNameController,
+                  decoration: const InputDecoration(
+                    labelText: 'Enter your full name',
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(width: 1.0),
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 16),
-              const Text('Email'),
-              TextFormField(
-                controller: emailController,
-                decoration: const InputDecoration(
-                  labelText: 'Enter your email',
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(width: 1.0),
+                const SizedBox(height: 16),
+                const Text('Email'),
+                TextFormField(
+                   validator: (value) {
+                    if(value!.isEmpty){
+                      return "The Field is required";
+                    }else if(!(value.contains("@gmail.com"))){
+                      return "email not valid";
+                    }
+                    
+                    else{
+                      return null;
+                    }
+                  },
+                  controller: emailController,
+                  decoration: const InputDecoration(
+                    labelText: 'Enter your email',
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(width: 1.0),
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              Container(
-                width: 350,
-                height: 200,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.black,
-                    width: 1.0,
+                const SizedBox(height: 20),
+                Container(
+                  width: 350,
+                  height: 200,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.black,
+                      width: 1.0,
+                    ),
+                    borderRadius: BorderRadius.circular(4),
                   ),
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20.0),
-                        child: ListTile(
-                          title: Text(
-                            resumeFile != null
-                                ? resumeFile!.path
-                                    .split('/')
-                                    .last // Extract only the file name
-                                : 'No file selected',
-                          ),
-                          trailing: ElevatedButton.icon(
-                            onPressed: pickResume,
-                            icon: const Icon(Icons.attach_file),
-                            label: const Text('Upload File'),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20.0),
+                          child: ListTile(
+                            title: Text(
+                              resumeFile != null
+                                  ? resumeFile!.path
+                                      .split('/')
+                                      .last // Extract only the file name
+                                  : 'No file selected',
+                            ),
+                            trailing: ElevatedButton.icon(
+                              onPressed: pickResume,
+                              icon: const Icon(Icons.attach_file),
+                              label: const Text('Upload File'),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              const Padding(
-                padding: EdgeInsets.all(12.0),
-                child: Text('Description'),
-              ),
-              TextFormField(
-                controller: descriptionController,
-                maxLines: 5,
-                decoration: const InputDecoration(
-                  labelText: 'Enter your description',
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(width: 1.0),
+                const SizedBox(height: 20),
+                const Padding(
+                  padding: EdgeInsets.all(12.0),
+                  child: Text('Description'),
+                ),
+                TextFormField(
+                   validator: (value) {
+                    if(value!.isEmpty){
+                      return "The Field is required";
+                    }else{
+                      return null;
+                    }
+                  },
+                  controller: descriptionController,
+                  maxLines: 5,
+                  decoration: const InputDecoration(
+                    labelText: 'Enter your description',
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(width: 1.0),
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 32),
-              SizedBox(
-                height: 50,
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: submitApplication,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
+                const SizedBox(height: 32),
+                SizedBox(
+                  height: 50,
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: submitApplication,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                    ),
+                    child: const Text('Submit'),
                   ),
-                  child: const Text('Submit'),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

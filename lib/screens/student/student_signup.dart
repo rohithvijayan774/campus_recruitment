@@ -3,6 +3,7 @@ import 'package:campus_recruitment/screens/student/studentlogin.dart';
 import 'package:campus_recruitment/screens/student/tell%20us%20about%20yourself%20student.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -188,6 +189,7 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
+  bool showpassword = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -315,15 +317,25 @@ class _SignUpState extends State<SignUp> {
                           borderRadius: BorderRadius.circular(8.0),
                         ),
                         child: TextFormField(
+                          
                           controller: passwordController,
-                          decoration: const InputDecoration(
+                          decoration:  InputDecoration(
+                             suffixIcon: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    showpassword = !showpassword;
+                                  });
+                                },
+                                icon: Icon(showpassword
+                                    ? CupertinoIcons.eye_slash_fill
+                                    : CupertinoIcons.eye_solid)),
                             hintText: "Enter Password",
                             contentPadding: EdgeInsets.all(12.0),
                             border: InputBorder.none,
                           ),
                           keyboardType: TextInputType.visiblePassword,
                           maxLength: 10,
-                          obscureText: true,
+                          obscureText: showpassword,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter a password';
@@ -342,17 +354,28 @@ class _SignUpState extends State<SignUp> {
                         ),
                         child: TextFormField(
                           controller: confirmPasswordController,
-                          decoration: const InputDecoration(
+                          obscureText: showpassword,
+                          decoration: InputDecoration(
+                            suffixIcon: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    showpassword = !showpassword;
+                                  });
+                                },
+                                icon: Icon(showpassword
+                                    ? CupertinoIcons.eye_slash_fill
+                                    : CupertinoIcons.eye_solid)),
                             hintText: "Confirm Password",
-                            contentPadding: EdgeInsets.all(12.0),
+                            contentPadding: const EdgeInsets.all(12.0),
                             border: InputBorder.none,
                           ),
                           keyboardType: TextInputType.visiblePassword,
                           maxLength: 10,
-                          obscureText: true,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter password';
+                            } else if (value != passwordController.text) {
+                              return "does not match the password";
                             }
                             return null;
                           },

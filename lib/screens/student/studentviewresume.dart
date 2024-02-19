@@ -9,8 +9,8 @@ class StudentViewResume extends StatelessWidget {
       : super(key: key);
 
   Future<void> _launchURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
+    if (await launchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url));
     } else {
       throw 'Could not launch $url';
     }
@@ -44,8 +44,9 @@ class StudentViewResume extends StatelessWidget {
       ),
       body: Center(
         child: ElevatedButton(
-          onPressed: () {
-            _downloadResume();
+          onPressed: () async{
+      await  _launchURL(resumeUrl);
+            // _downloadResume();
           },
           child: const Text('Download Resume'),
         ),

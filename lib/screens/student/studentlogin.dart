@@ -88,7 +88,7 @@ class _StudentLogInState extends State<StudentLogIn> {
                             });
                           },
                           child: Icon(
-                            obscurePassword
+                            obscurePassword == false
                                 ? Icons.visibility
                                 : Icons.visibility_off,
                             color: Colors.black,
@@ -97,6 +97,7 @@ class _StudentLogInState extends State<StudentLogIn> {
                       ),
                       style: const TextStyle(color: Colors.black),
                       obscureText: obscurePassword,
+                      maxLength: 10,
                     ),
                   ),
                   const SizedBox(
@@ -190,13 +191,18 @@ class _StudentLogInState extends State<StudentLogIn> {
       String? userId = await getCurrentUserId();
       if (userId != null) {
         print('User ID: $userId');
+        if (FirebaseAuth.instance.currentUser!.emailVerified == true) {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => const StudentBottomNavigation(),
+              ),
+              (route) => false);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Please verify your email')));
+        }
 
         // Navigate to the BottomNavigation screen
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-              builder: (context) => const StudentBottomNavigation(),
-            ),
-            (route) => false);
       }
 
       // If the above line doesn't throw an exception, the login is successful.

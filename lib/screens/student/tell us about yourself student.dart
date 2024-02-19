@@ -231,24 +231,24 @@ class _TellusstudentState extends State<Tellusstudent> {
                   width: 15.0,
                 ),
               ),
-              GestureDetector(
-                onTap: () {
-                  _showSkipConfirmationDialog();
-                },
-                child: const Padding(
-                  padding: EdgeInsets.all(25.0),
-                  child: Center(
-                    child: Text(
-                      " Skip for now",
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              // GestureDetector(
+              //   onTap: () {
+              //     _showSkipConfirmationDialog();
+              //   },
+              //   child: const Padding(
+              //     padding: EdgeInsets.all(25.0),
+              //     child: Center(
+              //       child: Text(
+              //         " Skip for now",
+              //         style: TextStyle(
+              //           color: Colors.blue,
+              //           fontSize: 15.0,
+              //           fontWeight: FontWeight.bold,
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),
@@ -275,6 +275,7 @@ class _TellusstudentState extends State<Tellusstudent> {
             'qualification': qualificationcontroller.text,
             'skill': skillcontroller.text,
             'pincode': pincodecontroller.text,
+            'field': null,
           });
         } else {
           // Create a new document if it doesn't exist

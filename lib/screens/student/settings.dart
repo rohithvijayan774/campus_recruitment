@@ -67,18 +67,7 @@ class _SettingsState extends State<Settings> {
     });
   }
 
-  Future<void> _logout(context) async {
-    try {
-      await _auth.signOut();
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-            builder: (context) => const StartPage(),
-          ),
-          (route) => false);
-    } catch (e) {
-      print("Error during logout: $e");
-    }
-  }
+ 
 
   void _toggleNotification(bool value) {
     setState(() {
@@ -169,23 +158,7 @@ class _SettingsState extends State<Settings> {
               ),
             ),
           ),
-          Card(
-            color: Colors.white,
-            child: ListTile(
-              title: const Text("Logout"),
-              leading: const Icon(Icons.logout, color: Colors.blue, size: 30),
-              trailing: GestureDetector(
-                onTap: () {
-                  _logout(context);
-                },
-                child: const Icon(Icons.arrow_right_alt,
-                    color: Colors.blue), // Add color to the arrow button
-              ),
-              onTap: () {
-                _logout(context);
-              },
-            ),
-          ),
+          
         ],
       ),
     );

@@ -20,6 +20,8 @@ class _CompanyRegisterState extends State<CompanyRegister> {
   var passwordController = TextEditingController();
   var confirmPasswordController = TextEditingController();
   var addressController = TextEditingController();
+  var companyLicNo = TextEditingController();
+  var phoneNoController = TextEditingController();
   List<bool> isCheckedList = [false]; // Initial value
 
   Future<void> _createAccount(BuildContext context) async {
@@ -48,9 +50,12 @@ class _CompanyRegisterState extends State<CompanyRegister> {
             .collection('companies')
             .doc(userCredential.user!.uid)
             .set({
+          'companyId': userCredential.user!.uid,
           'companyname': companyNameController.text,
           'email': companyemailController.text,
           'address': addressController.text,
+          'companyLicNo': companyLicNo.text,
+          'phoneNo': phoneNoController.text,
         });
 
         // Navigate to the next screen or perform any other action
@@ -66,6 +71,7 @@ class _CompanyRegisterState extends State<CompanyRegister> {
             duration: Duration(seconds: 3),
           ),
         );
+        Navigator.of(context).pop();
       }
     } catch (e) {
       print("Error in registration: $e");
@@ -94,6 +100,13 @@ class _CompanyRegisterState extends State<CompanyRegister> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   TextFormField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '*this field is required';
+                      } else {
+                        return null;
+                      }
+                    },
                     controller: companyNameController,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
@@ -102,6 +115,13 @@ class _CompanyRegisterState extends State<CompanyRegister> {
                   ),
                   const SizedBox(height: 16.0),
                   TextFormField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '*this field is required';
+                      } else {
+                        return null;
+                      }
+                    },
                     controller: companyemailController,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
@@ -110,6 +130,44 @@ class _CompanyRegisterState extends State<CompanyRegister> {
                   ),
                   const SizedBox(height: 16.0),
                   TextFormField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '*this field is required';
+                      } else {
+                        return null;
+                      }
+                    },
+                    keyboardType: TextInputType.phone,
+                    controller: phoneNoController,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Phone',
+                    ),
+                  ),
+                  const SizedBox(height: 16.0),
+                  TextFormField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '*this field is required';
+                      } else {
+                        return null;
+                      }
+                    },
+                    controller: companyLicNo,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Company Lic No.',
+                    ),
+                  ),
+                  const SizedBox(height: 16.0),
+                  TextFormField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '*this field is required';
+                      } else {
+                        return null;
+                      }
+                    },
                     controller: passwordController,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
@@ -118,6 +176,15 @@ class _CompanyRegisterState extends State<CompanyRegister> {
                   ),
                   const SizedBox(height: 16.0),
                   TextFormField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '*this field is required';
+                      } else if (value != passwordController.text) {
+                        return "Password didnot match";
+                      } else {
+                        return null;
+                      }
+                    },
                     controller: confirmPasswordController,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
@@ -126,6 +193,13 @@ class _CompanyRegisterState extends State<CompanyRegister> {
                   ),
                   const SizedBox(height: 16.0),
                   TextFormField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '*this field is required';
+                      } else {
+                        return null;
+                      }
+                    },
                     controller: addressController,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),

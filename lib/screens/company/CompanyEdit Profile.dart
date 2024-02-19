@@ -214,9 +214,9 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
             _nameController.text = snapshot.get('companyname');
             _emailController.text = snapshot.get('email');
             _addressController.text = snapshot.get('address');
+            _contactController.text = snapshot.get('phoneNo');
             _websiteController.text = snapshot.get('website') ?? '';
             _industryController.text = snapshot.get('industry') ?? '';
-            _contactController.text = snapshot.get('contact') ?? '';
             _aboutController.text =
                 snapshot.get('about') ?? ''; // Set about text
           });
@@ -240,7 +240,7 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
           'address': _addressController.text,
           'website': _websiteController.text,
           'industry': _industryController.text,
-          'contact': _contactController.text,
+          'phoneNo': _contactController.text,
           'about': _aboutController.text, // Save about information
         });
 
@@ -249,6 +249,7 @@ class _CompanyEditProfileState extends State<CompanyEditProfile> {
             content: Text('Profile updated successfully'),
           ),
         );
+        Navigator.of(context).pop();
       }
     } catch (e) {
       print('Error updating company details: $e');

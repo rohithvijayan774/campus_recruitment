@@ -89,7 +89,7 @@ class _AdminLoginState extends State<AdminLogin> {
                               });
                             },
                             child: Icon(
-                              obscurePassword
+                              obscurePassword == false
                                   ? Icons.visibility
                                   : Icons.visibility_off,
                               color: Colors.black,
@@ -106,22 +106,23 @@ class _AdminLoginState extends State<AdminLogin> {
                     GestureDetector(
                       onTap: () async {
                         if (_formKey.currentState!.validate()) {
-                          bool isLoginSuccessful = await authenticateUser(
-                            emailController.text,
-                            passwordController.text,
-                          );
+                          adminLogin(
+                              emailController.text, passwordController.text);
+                          // bool isLoginSuccessful = await authenticateUser(
+                          //   emailController.text,
+                          //   passwordController.text,
+                          // );
 
-                          if (isLoginSuccessful) {
-                            _showSuccessSnackBar("Login successful!");
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const AdminHome(),
-                              ),
-                            );
-                          } else {
-                            _showErrorSnackBar("Invalid email or password");
-                          }
+                          // if (isLoginSuccessful) {
+                          //   _showSuccessSnackBar("Login successful!");
+                          //   Navigator.of(context).pushAndRemoveUntil(
+                          //       MaterialPageRoute(
+                          //         builder: (context) => const AdminHome(),
+                          //       ),
+                          //       (route) => false);
+                          // } else {
+                          //   _showErrorSnackBar("Invalid email or password");
+                          // }
                         }
                       },
                       child: Center(
@@ -184,6 +185,23 @@ class _AdminLoginState extends State<AdminLogin> {
       // Handle exceptions, e.g., Firestore query error
       print('Error checking admin status: $e');
       return false;
+    }
+  }
+
+  final firebaseAuth = FirebaseAuth.instance;
+
+  Future adminLogin(String username, String password) async {
+    try {
+      await firebaseAuth.signInWithEmailAndPassword(
+          email: username, password: password);
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (context) => const AdminHome(),
+          ),
+          (route) => false);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Invalid email / password')));
     }
   }
 

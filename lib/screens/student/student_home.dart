@@ -115,21 +115,21 @@ class _StudentHomeState extends State<StudentHome> {
                                           );
                                         },
                                       ),
-                                      IconButton(
-                                        icon: const Icon(
-                                          Icons.notification_add_outlined,
-                                          color: Colors.blue,
-                                        ),
-                                        onPressed: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const NotificationPage(),
-                                            ),
-                                          );
-                                        },
-                                      ),
+                                      // IconButton(
+                                      //   icon: const Icon(
+                                      //     Icons.notification_add_outlined,
+                                      //     color: Colors.blue,
+                                      //   ),
+                                      //   onPressed: () {
+                                      //     Navigator.push(
+                                      //       context,
+                                      //       MaterialPageRoute(
+                                      //         builder: (context) =>
+                                      //             const NotificationPage(),
+                                      //       ),
+                                      //     );
+                                      //   },
+                                      // ),
                                     ],
                                   ),
                                 ),
@@ -156,7 +156,7 @@ class _StudentHomeState extends State<StudentHome> {
                                             padding: EdgeInsets.only(left: 8.0),
                                             child: TextField(
                                               decoration: InputDecoration(
-                                                hintText: 'Search',
+                                                hintText: 'Job Search',
                                                 border: InputBorder.none,
                                                 hintStyle: TextStyle(
                                                     color: Colors.black),
@@ -194,19 +194,19 @@ class _StudentHomeState extends State<StudentHome> {
                                               : 20,
                                         ),
                                       ),
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 10.0),
-                                        child: Text(
-                                          'View more',
-                                          style: TextStyle(
-                                            color: Colors.blue,
-                                            fontSize: constraints.maxWidth > 600
-                                                ? 20
-                                                : 15,
-                                          ),
-                                        ),
-                                      ),
+                                      // Padding(
+                                      //   padding:
+                                      //       const EdgeInsets.only(right: 10.0),
+                                      //   child: Text(
+                                      //     'View more',
+                                      //     style: TextStyle(
+                                      //       color: Colors.blue,
+                                      //       fontSize: constraints.maxWidth > 600
+                                      //           ? 20
+                                      //           : 15,
+                                      //     ),
+                                      //   ),
+                                      // ),
                                     ],
                                   ),
                                 ),
@@ -357,7 +357,7 @@ class _StudentHomeState extends State<StudentHome> {
                                                                           'Unknown',
                                                                       'jobType':
                                                                           job['jobType'] ??
-                                                                              'Unknown',
+                                                                              'Unknown'
                                                                     };
 
                                                                     savedJobs.add(

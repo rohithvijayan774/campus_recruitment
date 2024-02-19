@@ -1,11 +1,13 @@
 import 'package:campus_recruitment/screens/student/appliedjobs.dart';
 import 'package:campus_recruitment/screens/student/personaldetails.dart';
+import 'package:campus_recruitment/screens/student/start.dart';
 import 'package:campus_recruitment/screens/student/student%20profile2.dart';
 import 'package:campus_recruitment/screens/student/studentqualificatio.dart';
 import 'package:campus_recruitment/screens/student/studentviewresume.dart';
 import 'package:campus_recruitment/screens/student/viewskills.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 class StudentProfile extends StatefulWidget {
@@ -19,6 +21,7 @@ class _StudentProfileState extends State<StudentProfile> {
   String? _name;
   String? _field;
   String? _email;
+  String ?resumeUrl;
 
   @override
   void initState() {
@@ -43,6 +46,7 @@ class _StudentProfileState extends State<StudentProfile> {
             _name = data['name'] ?? 'Unknown';
             _field = data['field'] ?? 'Unknown';
             _email = data['email'] ?? 'Unknown';
+            resumeUrl =data["resumeUrl"]??"Unknown";
           } else {
             print('Name field not found in the snapshot');
           }
@@ -212,12 +216,14 @@ class _StudentProfileState extends State<StudentProfile> {
                                   ),
                                   GestureDetector(
                                     onTap: () {
+                                      print(resumeUrl);
+                                      print("----------------------------------");
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              const StudentViewResume(
-                                            resumeUrl: '',
+                                               StudentViewResume(
+                                            resumeUrl:"${resumeUrl}",
                                           ),
                                         ),
                                       );
@@ -268,6 +274,32 @@ class _StudentProfileState extends State<StudentProfile> {
                                       ),
                                     ),
                                   ),
+
+GestureDetector(
+                                    onTap: () {
+                                      _logout(context);
+                                    },
+                                    child: const Card(
+                                      color: Color(0xFFD3D3D3),
+                                      child: ListTile(
+                                        leading:const Icon(Icons.logout, color: Colors.blue, size: 30),
+                                        title: Text(
+                                          "Logout",
+                                          textScaleFactor: 1.5,
+                                        ),
+                                        trailing: Icon(
+                                          Icons.keyboard_arrow_right,
+                                          color: Colors.blue,
+                                        ) ,
+
+                                        ),
+                                      ),
+                                    ),
+                                  
+
+
+
+       
                                 ],
                               ),
                             ),
@@ -324,5 +356,20 @@ class _StudentProfileState extends State<StudentProfile> {
                   );
           }),
     );
+  }
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+   Future<void> _logout(context) async {
+    try {
+      await _auth.signOut();
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (context) => const StartPage(),
+          ),
+          (route) => false);
+    } catch (e) {
+      print("Error during logout: $e");
+    }
   }
 }

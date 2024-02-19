@@ -2,7 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class ShortListCandidates extends StatefulWidget {
-  const ShortListCandidates({Key? key}) : super(key: key);
+  final String companyName;
+  const ShortListCandidates({required this.companyName,Key? key}) : super(key: key);
 
   @override
   State<ShortListCandidates> createState() => _ShortListCandidatesState();
@@ -18,7 +19,7 @@ class _ShortListCandidatesState extends State<ShortListCandidates> {
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('applied_jobs')
-            .where('status', isEqualTo: 'shortlisted')
+            .where('status', isEqualTo: 'shortlisted').where('companyname',isEqualTo:widget.companyName )
             .snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {

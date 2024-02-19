@@ -117,20 +117,47 @@ class _AppliedJobsState extends State<AppliedJobs> {
                 } else {
                   List<QueryDocumentSnapshot> appliedJobs =
                       snapshot.data as List<QueryDocumentSnapshot>;
+
+List<String> length=[];
+                      for(var i in appliedJobs){
+                      if(i["status"]!="Pending"){
+                        length.add(i["status"]);
+                      }
+                      }
+                      print(length.length);
+//                          Map<String,dynamic> dataa={};
+// for( var data in appliedJobs){
+// if(data["status"]!="pending"){
+//   print(data["status"]);
+//   // dataa=data.data() as Map<String,dynamic>;
+
+// }
+// }
+
                   return Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 10,
                     ),
                     child: ListView.builder(
-                      itemCount: appliedJobs.length,
+                      itemCount: length.length,
                       itemBuilder: (context, index) {
-                        var jobData =
-                            appliedJobs[index].data() as Map<String, dynamic>;
+
+
+
+
+                        // var jobData =
+                        //     appliedJobs[index].data() as Map<String, dynamic>;
+                            Map<String,dynamic> dataa={};
+if (appliedJobs[index]["status"]!="Pending"){
+
+dataa=appliedJobs[index].data() as  Map<String, dynamic>;
+}
+
                         return Card(
                           child: ListTile(
-                            title: Text(jobData['jobName']),
+                            title:dataa['jobName']==null?Text("Job not found"): Text(dataa['jobName']),
                             subtitle: Text(
-                              'Company: ${jobData['companyname']}\nStatus: ${jobData['status']}',
+                              'Company: ${dataa['companyname']}\nStatus: ${dataa['status']}',
                             ),
                           ),
                         );
@@ -167,7 +194,7 @@ class _AppliedJobsState extends State<AppliedJobs> {
     QuerySnapshot querySnapshot = await firestore
         .collection('applied_jobs')
         .where('userId', isEqualTo: userId)
-        .where('status', isEqualTo: 'rejected')
+        // .where('status', isEqualTo: 'Pending')
         .get();
 
     print('//////////FETCHING JOBS COMPLETED///////////////////');
