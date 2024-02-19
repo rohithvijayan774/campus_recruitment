@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class JobDetails {
+  final String companyId;
   final String companyname;
   final String jobTitle;
   final String jobType;
@@ -16,6 +17,7 @@ class JobDetails {
   final List<String> workDays;
 
   JobDetails({
+    required this.companyId,
     required this.companyname,
     required this.jobTitle,
     required this.jobType,
@@ -42,6 +44,8 @@ class _JObview1State extends State<JObview1> {
   String? description;
   String? expectedSkills;
   String? about;
+  String? phone;
+  String? email;
 
   @override
   void initState() {
@@ -59,6 +63,7 @@ class _JObview1State extends State<JObview1> {
 
       if (snapshot.docs.isNotEmpty) {
         var data = snapshot.docs[0].data() as Map<String, dynamic>;
+        print('///////////$data');
 
         // Ensure that the required fields exist in the document
         if (data.containsKey('description') &&
@@ -195,7 +200,7 @@ class _JObview1State extends State<JObview1> {
                                     unselectedLabelColor: Colors.grey,
                                     tabs: [
                                       Tab(text: 'Description'),
-                                      Tab(text: 'Company'),
+                                      Tab(text: 'Contact'),
                                     ],
                                   ),
                                 ],
@@ -268,7 +273,7 @@ class _JObview1State extends State<JObview1> {
                                   future: FirebaseFirestore.instance
                                       .collection(
                                           'companies') // Use 'companies' collection instead of 'jobs'
-                                      .doc(widget.jobDetails.companyname)
+                                      .doc(widget.jobDetails.companyId)
                                       .get(),
                                   builder: (context, snapshot) {
                                     if (snapshot.connectionState ==
@@ -288,9 +293,9 @@ class _JObview1State extends State<JObview1> {
                                     var companyData = snapshot.data!.data()
                                         as Map<String, dynamic>;
 
-                                    setState(() {
-                                      about = companyData['about'] ?? 'N/A';
-                                    });
+                                    // setState(() {
+                                    //   about = companyData['about'] ?? 'N/A';
+                                    // });
 
                                     return SingleChildScrollView(
                                       child: Padding(
@@ -301,7 +306,15 @@ class _JObview1State extends State<JObview1> {
                                           children: [
                                             const SizedBox(height: 10),
                                             Text(
-                                              'About: $about',
+                                              'Phone: ${snapshot.data!['phoneNo']}',
+                                              style:
+                                                  const TextStyle(fontSize: 16),
+                                            ),
+                                            const SizedBox(
+                                              height: 20,
+                                            ),
+                                            Text(
+                                              'Email: ${snapshot.data!['email']}',
                                               style:
                                                   const TextStyle(fontSize: 16),
                                             ),

@@ -35,43 +35,54 @@ class RegisteredUsers extends StatelessWidget {
             );
           }
 
-          return ListView.builder(
-            itemCount: users.length,
-            itemBuilder: (context, index) {
-              // Extract fields from the user document with default values
-              final name = users[index]['name'] as String? ?? 'N/A';
-              final username = users[index]['username'] as String? ?? 'N/A';
-              final field = users[index]['field'] as String? ?? 'not available';
-              final email = users[index]['email'] as String? ?? 'N/A';
+          return snapshot.connectionState == ConnectionState.waiting
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : users.isEmpty
+                  ? const Center(
+                      child: Text('No users found!'),
+                    )
+                  : ListView.builder(
+                      itemCount: users.length,
+                      itemBuilder: (context, index) {
+                        // Extract fields from the user document with default values
+                        final name = users[index]['name'] as String? ?? 'N/A';
+                        final username =
+                            users[index]['username'] as String? ?? 'N/A';
+                        final field =
+                            users[index]['field'] as String? ?? 'not available';
+                        final email = users[index]['email'] as String? ?? 'N/A';
 
-              return Card(
-                margin: const EdgeInsets.all(16.0),
-                child: ListTile(
-                  leading: const Icon(Icons.account_circle, size: 40.0),
-                  title: Text(
-                    name,
-                    style: const TextStyle(
-                        fontSize: 18.0, fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 8.0),
-                      Text('Email: $email',
-                          style: const TextStyle(fontSize: 16.0)),
-                      Text('Username: $username',
-                          style: const TextStyle(fontSize: 16.0)),
-                      Text('Field: $field',
-                          style: const TextStyle(fontSize: 16.0)),
-                    ],
-                  ),
-                  onTap: () {
-                    // Implement navigation to the detailed view if needed
-                  },
-                ),
-              );
-            },
-          );
+                        return Card(
+                          margin: const EdgeInsets.all(16.0),
+                          child: ListTile(
+                            leading:
+                                const Icon(Icons.account_circle, size: 40.0),
+                            title: Text(
+                              name,
+                              style: const TextStyle(
+                                  fontSize: 18.0, fontWeight: FontWeight.bold),
+                            ),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(height: 8.0),
+                                Text('Email: $email',
+                                    style: const TextStyle(fontSize: 16.0)),
+                                Text('Username: $username',
+                                    style: const TextStyle(fontSize: 16.0)),
+                                Text('Field: $field',
+                                    style: const TextStyle(fontSize: 16.0)),
+                              ],
+                            ),
+                            onTap: () {
+                              // Implement navigation to the detailed view if needed
+                            },
+                          ),
+                        );
+                      },
+                    );
         },
       ),
     );

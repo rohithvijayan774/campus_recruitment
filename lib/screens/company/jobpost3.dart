@@ -1,6 +1,7 @@
 import 'package:campus_recruitment/screens/company/bottomnavigation.dart';
 import 'package:campus_recruitment/screens/company/jobpost4.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Jobpost3 extends StatefulWidget {
@@ -15,6 +16,7 @@ class Jobpost3 extends StatefulWidget {
 class _Jobpost3State extends State<Jobpost3> {
   TextEditingController currentSalaryController = TextEditingController();
   TextEditingController expectedSalaryController = TextEditingController();
+  TextEditingController expectedSkillsController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -72,6 +74,28 @@ class _Jobpost3State extends State<Jobpost3> {
                       keyboardType: TextInputType.number,
                     ),
                   ),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 15, right: 210),
+                    child: Text(
+                      "Expected Skills",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      controller: expectedSkillsController,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        hintText: "Enter Skills",
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: 100),
                   ElevatedButton(
                     onPressed: () async {
@@ -82,6 +106,8 @@ class _Jobpost3State extends State<Jobpost3> {
                           .update({
                         'currentSalary': currentSalaryController.text,
                         'expectedSalary': expectedSalaryController.text,
+                        'expectedSkills': expectedSkillsController.text,
+                        'compnyId': FirebaseAuth.instance.currentUser!.uid,
                         // Add more fields as needed
                       }).then((value) =>
                               Navigator.of(context).pushAndRemoveUntil(

@@ -22,6 +22,7 @@ class _SettingsState extends State<Settings> {
 
   String name = ''; // Variable to hold the student name
   bool isNotificationEnabled = false;
+  String? proPicUrl;
 
   @override
   void initState() {
@@ -41,6 +42,7 @@ class _SettingsState extends State<Settings> {
         if (usersSnapshot.exists) {
           setState(() {
             name = usersSnapshot['name'];
+            proPicUrl = usersSnapshot['profilePicUrl'];
           });
 
           print('Name: $name');
@@ -67,8 +69,6 @@ class _SettingsState extends State<Settings> {
     });
   }
 
- 
-
   void _toggleNotification(bool value) {
     setState(() {
       isNotificationEnabled = value;
@@ -85,82 +85,87 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
-        children: [
-          const Padding(
-            padding: EdgeInsets.only(top: 125.0, left: 10),
-            child: Text(
-              "Settings",
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 35,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.only(top: 50.0),
-            child: Text(
-              "Account",
-              style: TextStyle(
-                color: Colors.black45,
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          Container(
-            decoration: const BoxDecoration(
-              border: Border(
-                top: BorderSide(
-                  color: Colors.grey,
-                  width: 1.0,
+      body: FutureBuilder(
+          future: _loadStudentInfo(),
+          builder: (context, snapshot) {
+            return ListView(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.only(top: 125.0, left: 10),
+                  child: Text(
+                    "Settings",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 35,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
-                bottom: BorderSide(
-                  color: Colors.grey,
-                  width: 1.0,
+                const Padding(
+                  padding: EdgeInsets.only(top: 50.0),
+                  child: Text(
+                    "Account",
+                    style: TextStyle(
+                      color: Colors.black45,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            child: ListTile(
-              leading: const CircleAvatar(
-                backgroundImage: AssetImage('assets/person.png'),
-              ),
-              title: Text(name),
-              subtitle: Text(_auth.currentUser?.email ?? ''),
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.only(top: 60.0),
-            child: Text(
-              "General",
-              style: TextStyle(
-                color: Colors.black45,
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          Card(
-            color: Colors.white,
-            child: ListTile(
-              title: const Text("Notification"),
-              leading:
-                  const Icon(Icons.notifications, color: Colors.blue, size: 30),
-              trailing: Transform.scale(
-                scale: 1,
-                child: Switch(
-                  value: isNotificationEnabled,
-                  activeColor: Colors.blue,
-                  inactiveTrackColor: Colors.white,
-                  onChanged: _toggleNotification,
+                Container(
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      top: BorderSide(
+                        color: Colors.grey,
+                        width: 1.0,
+                      ),
+                      bottom: BorderSide(
+                        color: Colors.grey,
+                        width: 1.0,
+                      ),
+                    ),
+                  ),
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      backgroundImage: proPicUrl == null
+                          ? const AssetImage('assets/person.png')
+                          : NetworkImage(proPicUrl!) as ImageProvider,
+                    ),
+                    title: Text(name),
+                    subtitle: Text(_auth.currentUser?.email ?? ''),
+                  ),
                 ),
-              ),
-            ),
-          ),
-          
-        ],
-      ),
+                const Padding(
+                  padding: EdgeInsets.only(top: 60.0),
+                  child: Text(
+                    "General",
+                    style: TextStyle(
+                      color: Colors.black45,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Card(
+                  color: Colors.white,
+                  child: ListTile(
+                    title: const Text("Notification"),
+                    leading: const Icon(Icons.notifications,
+                        color: Colors.blue, size: 30),
+                    trailing: Transform.scale(
+                      scale: 1,
+                      child: Switch(
+                        value: isNotificationEnabled,
+                        activeColor: Colors.blue,
+                        inactiveTrackColor: Colors.white,
+                        onChanged: _toggleNotification,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }),
     );
   }
 }

@@ -17,6 +17,7 @@ class _CompanyHomeState extends State<CompanyHome> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   String companyname = '';
+  String? logoPic;
 
   @override
   void initState() {
@@ -34,6 +35,7 @@ class _CompanyHomeState extends State<CompanyHome> {
 
         if (companySnapshot.exists) {
           companyname = companySnapshot['companyname'];
+          logoPic = companySnapshot['userlogo'] ?? '';
         }
       }
     } catch (e) {
@@ -57,9 +59,10 @@ class _CompanyHomeState extends State<CompanyHome> {
                         padding: const EdgeInsets.only(top: 30.0, left: 20),
                         child: Row(
                           children: [
-                            const CircleAvatar(
-                                backgroundImage:
-                                    AssetImage('assets/person.png'),
+                            CircleAvatar(
+                                backgroundImage: logoPic == ''
+                                    ? const AssetImage('assets/person.png')
+                                    : NetworkImage(logoPic!) as ImageProvider,
                                 radius: 30),
                             Padding(
                               padding: const EdgeInsets.all(25.0),

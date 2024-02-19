@@ -21,7 +21,8 @@ class _StudentProfileState extends State<StudentProfile> {
   String? _name;
   String? _field;
   String? _email;
-  String ?resumeUrl;
+  String? resumeUrl;
+  String? proPicUrl;
 
   @override
   void initState() {
@@ -46,7 +47,8 @@ class _StudentProfileState extends State<StudentProfile> {
             _name = data['name'] ?? 'Unknown';
             _field = data['field'] ?? 'Unknown';
             _email = data['email'] ?? 'Unknown';
-            resumeUrl =data["resumeUrl"]??"Unknown";
+            resumeUrl = data["resumeUrl"] ?? "Unknown";
+            proPicUrl = data["profilePicUrl"] ?? "Unknown";
           } else {
             print('Name field not found in the snapshot');
           }
@@ -63,6 +65,7 @@ class _StudentProfileState extends State<StudentProfile> {
       body: FutureBuilder(
           future: _fetchUserData(),
           builder: (context, snapshot) {
+            print('///////$proPicUrl');
             return snapshot.connectionState == ConnectionState.waiting
                 ? const Center(
                     child: CircularProgressIndicator(),
@@ -217,13 +220,14 @@ class _StudentProfileState extends State<StudentProfile> {
                                   GestureDetector(
                                     onTap: () {
                                       print(resumeUrl);
-                                      print("----------------------------------");
+                                      print(
+                                          "----------------------------------");
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                               StudentViewResume(
-                                            resumeUrl:"${resumeUrl}",
+                                              StudentViewResume(
+                                            resumeUrl: "${resumeUrl}",
                                           ),
                                         ),
                                       );
@@ -275,14 +279,15 @@ class _StudentProfileState extends State<StudentProfile> {
                                     ),
                                   ),
 
-GestureDetector(
+                                  GestureDetector(
                                     onTap: () {
                                       _logout(context);
                                     },
                                     child: const Card(
                                       color: Color(0xFFD3D3D3),
                                       child: ListTile(
-                                        leading:const Icon(Icons.logout, color: Colors.blue, size: 30),
+                                        leading: Icon(Icons.logout,
+                                            color: Colors.blue, size: 30),
                                         title: Text(
                                           "Logout",
                                           textScaleFactor: 1.5,
@@ -290,16 +295,10 @@ GestureDetector(
                                         trailing: Icon(
                                           Icons.keyboard_arrow_right,
                                           color: Colors.blue,
-                                        ) ,
-
                                         ),
                                       ),
                                     ),
-                                  
-
-
-
-       
+                                  ),
                                 ],
                               ),
                             ),
@@ -324,9 +323,12 @@ GestureDetector(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    const CircleAvatar(
-                                      backgroundImage: AssetImage(
-                                          'assets/person.png'), // You can replace this with your actual image
+                                    CircleAvatar(
+                                      backgroundImage: proPicUrl == null
+                                          ? const AssetImage(
+                                              'assets/person.png')
+                                          : NetworkImage(proPicUrl!)
+                                              as ImageProvider, // You can replace this with your actual image
                                       radius: 50,
                                     ),
                                     const SizedBox(height: 10),
@@ -357,10 +359,11 @@ GestureDetector(
           }),
     );
   }
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
-   Future<void> _logout(context) async {
+  Future<void> _logout(context) async {
     try {
       await _auth.signOut();
       Navigator.of(context).pushAndRemoveUntil(

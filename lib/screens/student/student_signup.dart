@@ -74,6 +74,7 @@ class _SignUpState extends State<SignUp> {
           'email': emailController.text,
           'dob': dobController.text,
           'phoneNumber': phoneNumberController.text,
+          'userId': userCredential.user!.uid,
           // Add other user details as needed
         });
 
@@ -317,10 +318,9 @@ class _SignUpState extends State<SignUp> {
                           borderRadius: BorderRadius.circular(8.0),
                         ),
                         child: TextFormField(
-                          
                           controller: passwordController,
-                          decoration:  InputDecoration(
-                             suffixIcon: IconButton(
+                          decoration: InputDecoration(
+                            suffixIcon: IconButton(
                                 onPressed: () {
                                   setState(() {
                                     showpassword = !showpassword;

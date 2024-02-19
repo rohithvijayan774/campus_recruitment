@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'jobview1.dart';
@@ -20,7 +21,26 @@ class _JobListingState extends State<JobListing> {
   @override
   void initState() {
     super.initState();
+    fetchUsers();
     _jobsStream = _firestore.collection('jobs').snapshots();
+  }
+
+  String? proPicUrl;
+
+  Future fetchUsers() async {
+    try {
+      CollectionReference userCollection =
+          FirebaseFirestore.instance.collection('users');
+      DocumentSnapshot snapshot = await userCollection
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .get();
+
+      if (snapshot.exists) {
+        proPicUrl = snapshot['profilePicUrl'];
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -30,7 +50,16 @@ class _JobListingState extends State<JobListing> {
         backgroundColor: Colors.white,
         leading: Padding(
           padding: const EdgeInsets.only(left: 10.0),
-          child: Image.asset('assets/person.png'),
+          child: FutureBuilder(
+              future: fetchUsers(),
+              builder: (context, snapshot) {
+                return CircleAvatar(
+                  backgroundImage: proPicUrl == null
+                      ? const AssetImage('assets/person.png')
+                      : NetworkImage(proPicUrl!) as ImageProvider,
+                  radius: 25,
+                );
+              }),
         ),
         actions: <Widget>[
           IconButton(
@@ -75,10 +104,13 @@ class _JobListingState extends State<JobListing> {
                           var companyname =
                               jobList[index]['companyname'] as String?;
                           var jobTitle = jobList[index]['jobTitle'] as String?;
+                          var companyId =
+                              jobList[index]['companyId'] as String?;
 
                           // Check if fields are not null before using them
                           if (companyname != null && jobTitle != null) {
-                            return buildJobCard(context, companyname, jobTitle);
+                            return buildJobCard(
+                                context, companyname, jobTitle, companyId!);
                           } else {
                             // Handle the case where fields are null or not present
                             return Container();
@@ -93,8 +125,8 @@ class _JobListingState extends State<JobListing> {
     );
   }
 
-  Widget buildJobCard(
-      BuildContext context, String companyname, String jobTitle) {
+  Widget buildJobCard(BuildContext context, String companyname, String jobTitle,
+      String companyId) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Card(
@@ -108,6 +140,7 @@ class _JobListingState extends State<JobListing> {
               trailing: GestureDetector(
                 onTap: () {
                   var jobDetails = JobDetails(
+                    companyId: companyId,
                     companyname: companyname,
                     jobTitle: jobTitle,
                     jobType: '', // Add your data
@@ -195,6 +228,7 @@ class JobSearch extends SearchDelegate<String> {
           itemBuilder: (context, index) {
             var companyname = jobList[index]['companyname'] as String?;
             var jobTitle = jobList[index]['jobTitle'] as String?;
+            var companyId = jobList[index]['companyId'] as String?;
 
             // Check if fields are not null before using them
             if (companyname != null && jobTitle != null) {
@@ -208,6 +242,7 @@ class JobSearch extends SearchDelegate<String> {
                     MaterialPageRoute(
                       builder: (context) => JObview1(
                         jobDetails: JobDetails(
+                          companyId: companyId!,
                           companyname: companyname,
                           jobTitle: jobTitle,
                           jobType: '', // Add your data

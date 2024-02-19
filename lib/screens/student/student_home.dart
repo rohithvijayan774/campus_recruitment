@@ -24,6 +24,7 @@ class _StudentHomeState extends State<StudentHome> {
   String cgpa = '';
   String userGender = '';
   String userSkills = '';
+  String? proPicUrl;
 
   Future fetchUsers() async {
     try {
@@ -43,6 +44,7 @@ class _StudentHomeState extends State<StudentHome> {
         userSkills = snapshot['skill'];
         userNumber = snapshot['phoneNumber'];
         cgpa = snapshot['CGPA'];
+        proPicUrl = snapshot['profilePicUrl'];
       }
 
       print(userName);
@@ -78,9 +80,12 @@ class _StudentHomeState extends State<StudentHome> {
                                       const EdgeInsets.only(top: 50, left: 20),
                                   child: Row(
                                     children: [
-                                      const CircleAvatar(
-                                        backgroundImage:
-                                            AssetImage('assets/person.png'),
+                                      CircleAvatar(
+                                        backgroundImage: proPicUrl == null
+                                            ? const AssetImage(
+                                                'assets/person.png')
+                                            : NetworkImage(proPicUrl!)
+                                                as ImageProvider,
                                         radius: 25,
                                       ),
                                       Padding(

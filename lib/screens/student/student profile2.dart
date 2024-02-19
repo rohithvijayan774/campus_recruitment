@@ -103,15 +103,18 @@ class _StudentProfile2State extends State<StudentProfile2> {
     }
   }
 
+  String? proPic;
   Future<String> _uploadFile(File file, String storageFolder) async {
     try {
       String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+      SettableMetadata metadata = SettableMetadata(contentType: 'image/jpeg');
       Reference storageReference =
           FirebaseStorage.instance.ref().child('$storageFolder/$fileName');
-      UploadTask uploadTask = storageReference.putFile(file);
+      UploadTask uploadTask = storageReference.putFile(file, metadata);
       await uploadTask.whenComplete(() => null);
 
       String downloadUrl = await storageReference.getDownloadURL();
+      proPic = downloadUrl;
       return downloadUrl;
     } catch (e) {
       print('Error uploading file: $e');
@@ -372,8 +375,8 @@ class _StudentProfile2State extends State<StudentProfile2> {
                               ],
                             ),
                             ElevatedButton(
-                              onPressed: ()async {
-                              await  _updateUserDetails();
+                              onPressed: () async {
+                                await _updateUserDetails();
                                 Navigator.of(context).pop(true);
                               },
                               child: const Text('Done'),

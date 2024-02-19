@@ -15,6 +15,7 @@ class CompanySettingsPage extends StatefulWidget {
 class _CompanySettingsPageState extends State<CompanySettingsPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   String companyname = '';
+  String logoPic = '';
   bool isNotificationEnabled = false;
   late Timer _timer;
 
@@ -42,6 +43,7 @@ class _CompanySettingsPageState extends State<CompanySettingsPage> {
         if (snapshot.exists) {
           if (mounted) {
             companyname = snapshot['companyname'];
+            logoPic = snapshot['userlogo'] ?? '';
           }
         }
       }
@@ -119,8 +121,10 @@ class _CompanySettingsPageState extends State<CompanySettingsPage> {
                         padding: const EdgeInsets.all(8.0),
                         child: Card(
                           child: ListTile(
-                            leading: const CircleAvatar(
-                              backgroundImage: AssetImage('assets/person.png'),
+                            leading: CircleAvatar(
+                              backgroundImage: logoPic == ''
+                                  ? const AssetImage('assets/person.png')
+                                  : NetworkImage(logoPic) as ImageProvider,
                             ),
                             title: Text(companyname),
                           ),
