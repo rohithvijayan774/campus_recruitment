@@ -77,8 +77,10 @@ class _SavedJobsState extends State<SavedJobs> {
   Future getSavedJobs(String userEmail) async {
     savedJobsList.clear();
     print('////////////////////////$userEmail');
-    CollectionReference savedJobCollection =
-        FirebaseFirestore.instance.collection('savedjobs');
+    CollectionReference savedJobCollection = FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.userid)
+        .collection('savedjobs');
 
     try {
       QuerySnapshot savedJobSnaphot =
@@ -139,12 +141,12 @@ class _SavedJobsState extends State<SavedJobs> {
                     children: [
                       Text(
                         companyname,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
                         ),
                       ),
-                      Text('address'),
+                      const Text('address'),
                     ],
                   ),
                 ),

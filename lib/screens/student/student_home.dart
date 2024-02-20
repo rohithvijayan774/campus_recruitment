@@ -351,6 +351,9 @@ class _StudentHomeState extends State<StudentHome> {
                                                                       'companyname':
                                                                           job['companyname'] ??
                                                                               'Unknown',
+                                                                      'companyId':
+                                                                          job['companyId'] ??
+                                                                              'Unknown',
                                                                       'address':
                                                                           job['address'] ??
                                                                               'Unknown',
@@ -370,8 +373,14 @@ class _StudentHomeState extends State<StudentHome> {
 
                                                                     await _firestore
                                                                         .collection(
+                                                                            'users')
+                                                                        .doc(
+                                                                            userid)
+                                                                        .collection(
                                                                             'savedjobs')
-                                                                        .add({
+                                                                        .doc(
+                                                                            '${savedJobs[index]['companyname']} ${savedJobs[index]['jobTitle']}')
+                                                                        .set({
                                                                       'username':
                                                                           userName,
                                                                       'email':
@@ -487,7 +496,8 @@ class _StudentHomeState extends State<StudentHome> {
                                                                           userSkills,
                                                                       cgpa:
                                                                           cgpa,
-                                                                          proPicUrl: proPicUrl!,
+                                                                      proPicUrl:
+                                                                          proPicUrl!,
                                                                     ),
                                                                   ),
                                                                 );
