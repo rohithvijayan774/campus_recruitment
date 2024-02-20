@@ -1,4 +1,6 @@
+import 'package:campus_recruitment/screens/company/Viewresume.dart';
 import 'package:campus_recruitment/screens/company/notificationpage.dart';
+import 'package:campus_recruitment/screens/company/view_resume.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -233,6 +235,7 @@ class _CompanyViewStudentProfileState extends State<CompanyViewStudentProfile> {
   var username = '';
   var field = '';
   var email = '';
+  var resumeURL = '';
 
   @override
   void initState() {
@@ -262,6 +265,7 @@ class _CompanyViewStudentProfileState extends State<CompanyViewStudentProfile> {
         qualification.text = userData['qualification'] ?? '';
         certification.text = userData['certification'] ?? '';
         skills.text = userData['skills'] ?? '';
+        resumeURL = userData['resume'] ?? '';
       } else {
         print(
             'No data found for username: ${widget.username} and jobTitle: ${widget.jobTitle}');
@@ -456,7 +460,13 @@ class _CompanyViewStudentProfileState extends State<CompanyViewStudentProfile> {
                             Padding(
                               padding: const EdgeInsets.all(15.0),
                               child: ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => ViewResume(
+                                        studentName: username,
+                                        studentResumeUrl: resumeURL),
+                                  ));
+                                },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.purple,
                                   foregroundColor: Colors.white,

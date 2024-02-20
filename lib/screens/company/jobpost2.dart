@@ -142,8 +142,10 @@ class _Jobpost2State extends State<Jobpost2> {
                 ),
                 const SizedBox(height: 100),
                 ElevatedButton(
-                  onPressed: () async {
-                    // Get the currently logged-in user
+                  onPressed: () async {if (jobType == '') {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Please select jobtype')));
+                  }else{
+                      // Get the currently logged-in user
                     // Assuming you have already initialized FirebaseAuth
                     User? user = FirebaseAuth.instance.currentUser;
 
@@ -170,6 +172,9 @@ class _Jobpost2State extends State<Jobpost2> {
                         ),
                       );
                     }
+                  }
+
+                  
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,

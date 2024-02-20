@@ -60,6 +60,7 @@ class _AdminHomeState extends State<AdminHome> {
     XFile? pickedImage;
 
     final picker = ImagePicker();
+    final addEventKey = GlobalKey<FormState>();
 
     showDialog<void>(
       context: context,
@@ -69,70 +70,88 @@ class _AdminHomeState extends State<AdminHome> {
           return AlertDialog(
             title: const Text('Add Event'),
             content: SingleChildScrollView(
-              child: Column(
-                children: <Widget>[
-                  TextField(
-                    decoration: const InputDecoration(labelText: 'Event Name'),
-                    onChanged: (value) {
-                      eventName = value;
-                    },
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Text(
-                          'Event Date: ${DateFormat('dd-MM-yyyy').format(eventDate)}'),
-                      IconButton(
-                        icon: const Icon(Icons.calendar_today),
-                        onPressed: () async {
-                          DateTime? pickedDate = await showDatePicker(
-                            context: context,
-                            initialDate: eventDate,
-                            firstDate: DateTime.now(),
-                            lastDate: DateTime(2101),
-                          );
-                          if (pickedDate != null && pickedDate != eventDate) {
-                            setState(() {
-                              eventDate = pickedDate;
-                            });
-                          }
-                        },
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Text('Event Time: ${eventTime.format(context)}'),
-                      IconButton(
-                        icon: const Icon(Icons.access_time),
-                        onPressed: () async {
-                          TimeOfDay? pickedTime = await showTimePicker(
-                            context: context,
-                            initialTime: eventTime,
-                          );
-                          if (pickedTime != null && pickedTime != eventTime) {
-                            setState(() {
-                              eventTime = pickedTime;
-                            });
-                          }
-                        },
-                      ),
-                    ],
-                  ),
-                  TextField(
-                    decoration:
-                        const InputDecoration(labelText: 'Event Location'),
-                    onChanged: (value) {
-                      eventLocation = value;
-                    },
-                  ),
-                ],
+              child: Form(
+                key:addEventKey ,
+                child: Column(
+                  children: <Widget>[
+                    TextFormField(
+                      validator: (value) {
+                        if (value==null||value.isEmpty) {
+                          return '*required field';
+                        }else{
+                          return null;
+                        }
+                      },
+                      decoration: const InputDecoration(labelText: 'Event Name'),
+                      onChanged: (value) {
+                        eventName = value;
+                      },
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Text(
+                            'Event Date: ${DateFormat('dd-MM-yyyy').format(eventDate)}'),
+                        IconButton(
+                          icon: const Icon(Icons.calendar_today),
+                          onPressed: () async {
+                            DateTime? pickedDate = await showDatePicker(
+                              context: context,
+                              initialDate: eventDate,
+                              firstDate: DateTime.now(),
+                              lastDate: DateTime(2101),
+                            );
+                            if (pickedDate != null && pickedDate != eventDate) {
+                              setState(() {
+                                eventDate = pickedDate;
+                              });
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Text('Event Time: ${eventTime.format(context)}'),
+                        IconButton(
+                          icon: const Icon(Icons.access_time),
+                          onPressed: () async {
+                            TimeOfDay? pickedTime = await showTimePicker(
+                              context: context,
+                              initialTime: eventTime,
+                            );
+                            if (pickedTime != null && pickedTime != eventTime) {
+                              setState(() {
+                                eventTime = pickedTime;
+                              });
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                    TextFormField(
+                       validator: (value) {
+                        if (value==null||value.isEmpty) {
+                          return '*required field';
+                        }else{
+                          return null;
+                        }
+                      },
+                      decoration:
+                          const InputDecoration(labelText: 'Event Location'),
+                      onChanged: (value) {
+                        eventLocation = value;
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
             actions: <Widget>[
               TextButton(
                 child: const Text('Add'),
                 onPressed: () async {
-                  final eventCollection =
+                  if (addEventKey.currentState!.validate()) {
+                     final eventCollection =
                       FirebaseFirestore.instance.collection('events');
 
                   final ref = await eventCollection.add({
@@ -148,6 +167,8 @@ class _AdminHomeState extends State<AdminHome> {
                   await ref.update({'eventid': eventid});
 
                   Navigator.of(context).pop();
+                  }
+                 
                 },
               ),
               TextButton(
@@ -282,6 +303,7 @@ class _AdminHomeState extends State<AdminHome> {
                                                       eventCollection.doc(
                                                           event['eventid']);
                                                   await eventDoc.delete();
+                                                  Navigator.of(context).pop();
                                                 },
                                                 child: const Text('Delete'),
                                               ),

@@ -217,38 +217,38 @@ class _StudentProfileState extends State<StudentProfile> {
                                       ),
                                     ),
                                   ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      print(resumeUrl);
-                                      print(
-                                          "----------------------------------");
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              StudentViewResume(
-                                            resumeUrl: "${resumeUrl}",
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    child: const Card(
-                                      color: Color(0xFFD3D3D3),
-                                      child: ListTile(
-                                        leading: Icon(
-                                            Icons.contact_page_outlined,
-                                            color: Colors.blue),
-                                        title: Text(
-                                          'Resume',
-                                          textScaleFactor: 1.5,
-                                        ),
-                                        trailing: Icon(
-                                          Icons.keyboard_arrow_right,
-                                          color: Colors.blue,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                                  // GestureDetector(
+                                  //   onTap: () {
+                                  //     print(resumeUrl);
+                                  //     print(
+                                  //         "----------------------------------");
+                                  //     Navigator.push(
+                                  //       context,
+                                  //       MaterialPageRoute(
+                                  //         builder: (context) =>
+                                  //             StudentViewResume(
+                                  //           resumeUrl: "${resumeUrl}",
+                                  //         ),
+                                  //       ),
+                                  //     );
+                                  //   },
+                                  //   child: const Card(
+                                  //     color: Color(0xFFD3D3D3),
+                                  //     child: ListTile(
+                                  //       leading: Icon(
+                                  //           Icons.contact_page_outlined,
+                                  //           color: Colors.blue),
+                                  //       title: Text(
+                                  //         'Resume',
+                                  //         textScaleFactor: 1.5,
+                                  //       ),
+                                  //       trailing: Icon(
+                                  //         Icons.keyboard_arrow_right,
+                                  //         color: Colors.blue,
+                                  //       ),
+                                  //     ),
+                                  //   ),
+                                  // ),
                                   // View Applied jobs Card
                                   GestureDetector(
                                     onTap: () {

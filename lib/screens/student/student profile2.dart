@@ -192,31 +192,7 @@ class _StudentProfile2State extends State<StudentProfile2> {
                         ),
                         child: Stack(
                           children: [
-                            Positioned(
-                              top: 16,
-                              right: 16,
-                              child: TextButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const StudentProfile(),
-                                    ),
-                                  );
-                                },
-                                style: TextButton.styleFrom(
-                                  backgroundColor: Colors.white,
-                                ),
-                                child: const Text(
-                                  "Done",
-                                  style: TextStyle(
-                                    color: Colors.blue,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ),
-                            ),
+                           
                             Center(
                               child: GestureDetector(
                                 onTap: () {
@@ -364,16 +340,17 @@ class _StudentProfile2State extends State<StudentProfile2> {
                                     ),
                                   ),
                                 ),
-                                const SizedBox(width: 16),
-                                ElevatedButton.icon(
-                                  onPressed: () {
-                                    pickResume();
-                                  },
-                                  icon: const Icon(Icons.attach_file),
-                                  label: const Text('Add Resume'),
-                                ),
+                                // const SizedBox(width: 16),
+                                // ElevatedButton.icon(
+                                //   onPressed: () {
+                                //     pickResume();
+                                //   },
+                                //   icon: const Icon(Icons.attach_file),
+                                //   label: const Text('Add Resume'),
+                                // ),
                               ],
                             ),
+                          const  SizedBox(height: 20,),
                             ElevatedButton(
                               onPressed: () async {
                                 await _updateUserDetails();

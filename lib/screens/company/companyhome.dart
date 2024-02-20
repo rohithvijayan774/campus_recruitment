@@ -35,7 +35,9 @@ class _CompanyHomeState extends State<CompanyHome> {
 
         if (companySnapshot.exists) {
           companyname = companySnapshot['companyname'];
+          
           logoPic = companySnapshot['userlogo'] ?? '';
+         
         }
       }
     } catch (e) {

@@ -14,6 +14,8 @@ class _CompanyRegisterState extends State<CompanyRegister> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final _formKey = GlobalKey<FormState>();
+  bool obscurePassword = true;
+  bool obscureConfrmPassword = true;
 
   var companyNameController = TextEditingController();
   var companyemailController = TextEditingController();
@@ -56,6 +58,7 @@ class _CompanyRegisterState extends State<CompanyRegister> {
           'address': addressController.text,
           'companyLicNo': companyLicNo.text,
           'phoneNo': phoneNoController.text,
+          'userlogo':null
         });
 
         // Navigate to the next screen or perform any other action
@@ -137,6 +140,7 @@ class _CompanyRegisterState extends State<CompanyRegister> {
                         return null;
                       }
                     },
+                    maxLength: 10,
                     keyboardType: TextInputType.phone,
                     controller: phoneNoController,
                     decoration: const InputDecoration(
@@ -169,10 +173,24 @@ class _CompanyRegisterState extends State<CompanyRegister> {
                       }
                     },
                     controller: passwordController,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'Enter Password',
+                       suffixIcon: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                obscurePassword = !obscurePassword;
+                              });
+                            },
+                            child: Icon(
+                              obscurePassword == false
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Colors.black,
+                            ),
+                          ),
                     ),
+                    obscureText: obscurePassword,
                   ),
                   const SizedBox(height: 16.0),
                   TextFormField(
@@ -186,10 +204,24 @@ class _CompanyRegisterState extends State<CompanyRegister> {
                       }
                     },
                     controller: confirmPasswordController,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'Confirm Password',
+                      suffixIcon: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                obscureConfrmPassword = !obscureConfrmPassword;
+                              });
+                            },
+                            child: Icon(
+                              obscureConfrmPassword == false
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Colors.black,
+                            ),
+                          ),
                     ),
+                    obscureText: obscureConfrmPassword,
                   ),
                   const SizedBox(height: 16.0),
                   TextFormField(

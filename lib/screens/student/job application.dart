@@ -46,12 +46,12 @@ class _JobApplicationState extends State<JobApplication> {
   TextEditingController fullNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
- final _formKey=GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   String dob = '';
   String phone = '';
   String gender = '';
   String qualification = '';
-  String certificate = '';
+  String resume = '';
   String skills = '';
   String status = 'Pending';
 
@@ -72,87 +72,83 @@ class _JobApplicationState extends State<JobApplication> {
     String username = fullNameController.text;
     String email = emailController.text;
 
-if(_formKey.currentState!.validate()){
-  if (resumeFile != null) {
-      Reference storageReference = FirebaseStorage.instance
-          .ref()
-          .child('resumes/${DateTime.now().toString()}');
-      await storageReference.putFile(resumeFile!);
-      String resumeUrl = await storageReference.getDownloadURL();
+    if (_formKey.currentState!.validate()) {
+      if (resumeFile != null) {
+        SettableMetadata metadata = SettableMetadata(contentType: 'image/jpeg');
+        Reference storageReference = FirebaseStorage.instance
+            .ref()
+            .child('resumes/$username ${DateTime.now().toString()}');
+        await storageReference.putFile(resumeFile!, metadata);
+        String resumeUrl = await storageReference.getDownloadURL();
+        resume = resumeUrl;
 
-var firestore = FirebaseFirestore.instance;
-    await firestore.collection('applied_jobs').add({
-      'userId': widget.userId,
-      'jobName': jobName,
-      'jobAddress': jobAddress,
-      'jobTitle': jobTitle,
-      'companyname': widget.companyname,
-      'username': username,
-      'email': email,
-      'dob': widget.userDOB,
-      'phone': widget.userNumber,
-      'gender': widget.userGender,
-      'cgpa': widget.cgpa,
-      'qualification': widget.userQualification,
-      'certificate': certificate,
-      'skills': widget.userSkills,
-      'status': status,
-      // Add other fields as needed
-    });
+        var firestore = FirebaseFirestore.instance;
+        await firestore.collection('applied_jobs').add({
+          'userId': widget.userId,
+          'jobName': jobName,
+          'jobAddress': jobAddress,
+          'jobTitle': jobTitle,
+          'companyname': widget.companyname,
+          'username': username,
+          'email': email,
+          'dob': widget.userDOB,
+          'phone': widget.userNumber,
+          'gender': widget.userGender,
+          'cgpa': widget.cgpa,
+          'qualification': widget.userQualification,
+          'resume': resume,
+          'skills': widget.userSkills,
+          'status': status,
+          // Add other fields as needed
+        });
 
-
-
-  showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          child: Container(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Text(
-                  'Congratulations',
-                  style: TextStyle(
-                    color: Colors.blue,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return Dialog(
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text(
+                      'Congratulations',
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    const Text(
+                        'Your application has been submitted successfully'),
+                    const SizedBox(height: 16),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                const StudentBottomNavigation(),
+                          ),
+                          (route) => false,
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                      ),
+                      child: const Text('Home'),
+                    ),
+                    const SizedBox(height: 16),
+                  ],
                 ),
-                const SizedBox(height: 16),
-                const Text('Your application has been submitted successfully'),
-                const SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>const StudentBottomNavigation(),), (route) => false,);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                  ),
-                  child: const Text('Home'),
-                ),
-                const SizedBox(height: 16),
-                
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         );
-      },
-    );
 
-
-
-
-      // Store resumeUrl in Firestore or use it as needed
+        // Store resumeUrl in Firestore or use it as needed
+      }
     }
-
-    
-
-   
-
-
-
-}
   }
 
   @override
@@ -162,7 +158,7 @@ var firestore = FirebaseFirestore.instance;
         padding: const EdgeInsets.only(top: 50.0, left: 15, right: 15),
         child: SingleChildScrollView(
           child: Form(
-            key:_formKey ,
+            key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -184,9 +180,9 @@ var firestore = FirebaseFirestore.instance;
                 ),
                 TextFormField(
                   validator: (value) {
-                    if(value!.isEmpty){
+                    if (value!.isEmpty) {
                       return "The Field is required";
-                    }else{
+                    } else {
                       return null;
                     }
                   },
@@ -201,14 +197,12 @@ var firestore = FirebaseFirestore.instance;
                 const SizedBox(height: 16),
                 const Text('Email'),
                 TextFormField(
-                   validator: (value) {
-                    if(value!.isEmpty){
+                  validator: (value) {
+                    if (value!.isEmpty) {
                       return "The Field is required";
-                    }else if(!(value.contains("@gmail.com"))){
+                    } else if (!(value.contains("@gmail.com"))) {
                       return "email not valid";
-                    }
-                    
-                    else{
+                    } else {
                       return null;
                     }
                   },
@@ -262,10 +256,10 @@ var firestore = FirebaseFirestore.instance;
                   child: Text('Description'),
                 ),
                 TextFormField(
-                   validator: (value) {
-                    if(value!.isEmpty){
+                  validator: (value) {
+                    if (value!.isEmpty) {
                       return "The Field is required";
-                    }else{
+                    } else {
                       return null;
                     }
                   },

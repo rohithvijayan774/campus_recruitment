@@ -92,7 +92,7 @@ class _CompanyShowProfileState extends State<CompanyShowProfile> {
                         ),
                         const SizedBox(height: 10),
                         Text(
-                          'Contact: ${companyData['contact']}',
+                          'Contact: ${companyData['phoneNo']}',
                           style: const TextStyle(fontSize: 18),
                         ),
                         const SizedBox(height: 10),
