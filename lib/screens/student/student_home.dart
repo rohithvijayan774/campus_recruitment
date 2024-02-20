@@ -487,6 +487,7 @@ class _StudentHomeState extends State<StudentHome> {
                                                                           userSkills,
                                                                       cgpa:
                                                                           cgpa,
+                                                                          proPicUrl: proPicUrl!,
                                                                     ),
                                                                   ),
                                                                 );

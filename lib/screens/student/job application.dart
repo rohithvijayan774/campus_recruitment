@@ -20,6 +20,7 @@ class JobApplication extends StatefulWidget {
   final String userGender;
   final String userSkills;
   final String cgpa;
+  final String proPicUrl;
 
   const JobApplication({
     Key? key,
@@ -35,6 +36,7 @@ class JobApplication extends StatefulWidget {
     required this.userGender,
     required this.userSkills,
     required this.cgpa,
+    required this.proPicUrl,
   }) : super(key: key);
 
   @override
@@ -99,6 +101,7 @@ class _JobApplicationState extends State<JobApplication> {
           'resume': resume,
           'skills': widget.userSkills,
           'status': status,
+          'profilePicUrl': widget.proPicUrl,
           // Add other fields as needed
         });
 

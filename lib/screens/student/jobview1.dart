@@ -98,6 +98,7 @@ class _JObview1State extends State<JObview1> {
   String userSkills = '';
   String userNumber = '';
   String cgpa = '';
+  String proPicUrl = '';
   Future fetchUsers() async {
     try {
       CollectionReference userCollection =
@@ -116,6 +117,7 @@ class _JObview1State extends State<JObview1> {
         userSkills = snapshot['skill'];
         userNumber = snapshot['phoneNumber'];
         cgpa = snapshot['CGPA'];
+        proPicUrl = snapshot['profilePicUrl'];
       }
 
       print(userName);
@@ -252,6 +254,7 @@ class _JObview1State extends State<JObview1> {
                                                     userGender: userGender,
                                                     userSkills: userSkills,
                                                     cgpa: cgpa,
+                                                    proPicUrl: proPicUrl,
                                                   ),
                                                 ),
                                               );

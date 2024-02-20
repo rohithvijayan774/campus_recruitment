@@ -98,6 +98,7 @@ class _StudentListState extends State<StudentList> {
                         itemBuilder: (context, index) {
                           var username = appliedJobs[index]['username'];
                           var jobTitle = appliedJobs[index]['jobName'];
+                          var proPicURL = appliedJobs[index]['profilePicUrl'];
 
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -106,10 +107,14 @@ class _StudentListState extends State<StudentList> {
                                 side: BorderSide(color: Colors.grey),
                               ),
                               child: ListTile(
-                                leading: const CircleAvatar(
-                                  backgroundColor: Colors.purpleAccent,
-                                  child: Icon(Icons.person,
-                                      size: 30, color: Colors.white),
+                                leading: CircleAvatar(
+                                  backgroundImage: proPicURL == null
+                                      ? const AssetImage('assets/person.png')
+                                      : NetworkImage(proPicURL)
+                                          as ImageProvider,
+                                  // backgroundColor: Colors.purpleAccent,
+                                  // child: Icon(Icons.person,
+                                  //     size: 30, color: Colors.white),
                                 ),
                                 title: Text(username),
                                 subtitle: Column(
@@ -129,6 +134,7 @@ class _StudentListState extends State<StudentList> {
                                           CompanyViewStudentProfile(
                                         username: username,
                                         jobTitle: jobTitle,
+                                        proPicURL: proPicURL,
                                       ),
                                     ),
                                   );
@@ -198,6 +204,7 @@ class StudentSearchDelegate extends SearchDelegate<String> {
                 builder: (context) => CompanyViewStudentProfile(
                   username: suggestionList[index]['username'],
                   jobTitle: suggestionList[index]['jobTitle'],
+                  proPicURL: suggestionList[index]['profilePicUrl'],
                 ),
               ),
             );
@@ -211,11 +218,13 @@ class StudentSearchDelegate extends SearchDelegate<String> {
 class CompanyViewStudentProfile extends StatefulWidget {
   final String username;
   final String jobTitle;
+  final String proPicURL;
 
   const CompanyViewStudentProfile({
     Key? key,
     required this.username,
     required this.jobTitle,
+    required this.proPicURL,
   }) : super(key: key);
 
   @override
@@ -236,6 +245,7 @@ class _CompanyViewStudentProfileState extends State<CompanyViewStudentProfile> {
   var field = '';
   var email = '';
   var resumeURL = '';
+  var proPic;
 
   @override
   void initState() {
@@ -266,6 +276,7 @@ class _CompanyViewStudentProfileState extends State<CompanyViewStudentProfile> {
         certification.text = userData['certification'] ?? '';
         skills.text = userData['skills'] ?? '';
         resumeURL = userData['resume'] ?? '';
+        proPic = userData['profilePicUrl'] ?? '';
       } else {
         print(
             'No data found for username: ${widget.username} and jobTitle: ${widget.jobTitle}');
@@ -346,13 +357,13 @@ class _CompanyViewStudentProfileState extends State<CompanyViewStudentProfile> {
                         Column(
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(bottom: 30),
-                              child: SizedBox(
-                                height: 100,
-                                width: 300,
-                                child: Image.asset('assets/person.png'),
-                              ),
-                            ),
+                                padding: const EdgeInsets.only(bottom: 30),
+                                child: CircleAvatar(
+                                  radius: 50,
+                                  backgroundImage: proPic == null
+                                      ? const AssetImage('assets/person.png')
+                                      : NetworkImage(proPic!) as ImageProvider,
+                                )),
                             Text(
                               username,
                               style: const TextStyle(
